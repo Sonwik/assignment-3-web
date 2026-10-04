@@ -1,0 +1,63 @@
+/* =========================================
+   TASK 1: Адаптивность вручную (Mobile-First)
+   ========================================= */
+
+/* Базовые стили (для телефонов - 375px) */
+.custom-section {
+    padding: 40px 20px;
+    background-color: #212529; /* Темный фон для контраста */
+    color: #fff;
+    margin-top: 60px;
+}
+
+/* Изменение 1: Базовый размер заголовка */
+.custom-heading {
+    text-align: center;
+    font-size: 1.8rem;
+    margin-bottom: 30px;
+}
+
+/* Сетка: 1 колонка на мобильных */
+.custom-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 20px;
+}
+
+.custom-card {
+    background-color: #343a40;
+    padding: 20px;
+    border-radius: 8px;
+    border: 1px solid #495057;
+    text-align: center;
+}
+
+/* -----------------------------------------
+   Брейкпоинт 1: Планшеты (от 768px)
+   ----------------------------------------- */
+@media (min-width: 768px) {
+    /* Сетка меняется на 2 колонки */
+    .custom-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    /* Изменение 2: Увеличиваем заголовок */
+    .custom-heading {
+        font-size: 2.2rem; 
+    }
+}
+
+/* -----------------------------------------
+   Брейкпоинт 2: Ноутбуки/Десктопы (от 1280px)
+   ----------------------------------------- */
+@media (min-width: 1280px) {
+    /* Сетка меняется на 3 колонки */
+    .custom-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+    
+    /* Изменение 3: Добавляем внутренние отступы секции */
+    .custom-section {
+        padding: 80px 10%; 
+    }
+}

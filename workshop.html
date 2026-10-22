@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Workshop Board - Fixed Gear Astana</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="css/tasks.css">
+  <!-- Task 2: свой JS-файл -->
+  <script src="js/workshop.js" defer></script>
+</head>
+<body class="tasks-page">
+
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark border-bottom border-secondary">
+    <div class="container">
+      <a class="navbar-brand" href="index.html">Fixed Gear Astana</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+          <li class="nav-item"><a class="nav-link text-warning" href="build.html">Order a Build</a></li>
+          <li class="nav-item"><a class="nav-link" href="game.html">Price Game</a></li>
+          <li class="nav-item"><a class="nav-link active" aria-current="page" href="workshop.html">Workshop</a></li>
+          <li class="nav-item"><a class="nav-link" href="rider.html">Rider Card</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container py-5">
+    <header class="page-head">
+      <p class="page-eyebrow">Task 2 · Page built from data</p>
+      <h1>Workshop board</h1>
+      <p class="page-lead">Every job in our workshop is a card. Move cards from To do to Done. The mechanic can work on only a few jobs at the same time.</p>
+    </header>
+
+    <!-- Панель инструментов: поиск, фильтр, сортировка -->
+    <section class="panel toolbar" aria-label="Search, filter and sort">
+      <div class="toolbar-field">
+        <label for="search" class="form-label">Search jobs</label>
+        <input type="search" class="form-control tasks-input" id="search" placeholder="e.g. chain">
+      </div>
+      <div class="toolbar-field">
+        <label for="tag-filter" class="form-label">Filter by tag</label>
+        <!-- Варианты тегов JavaScript добавит сам из данных -->
+        <select class="form-select tasks-input" id="tag-filter">
+          <option value="all">All tags</option>
+        </select>
+      </div>
+      <div class="toolbar-field">
+        <label for="sort" class="form-label">Sort</label>
+        <select class="form-select tasks-input" id="sort">
+          <option value="default">Default order</option>
+          <option value="high">Priority: high → low</option>
+          <option value="low">Priority: low → high</option>
+        </select>
+      </div>
+    </section>
+
+    <!-- Прогресс: всё содержимое строит JavaScript -->
+    <section class="panel progress-panel" aria-labelledby="progress-title">
+      <h2 class="panel-title" id="progress-title">Progress</h2>
+      <div id="progress"></div>
+    </section>
+
+    <!-- Сообщения: блокировка правилом, перемещение, "ничего не найдено" -->
+    <p class="notice" id="notice" role="status" aria-live="polite"></p>
+
+    <!-- Доска: пустой контейнер, колонки и карточки строит JavaScript -->
+    <div class="board" id="board"></div>
+  </main>
+
+  <footer class="text-center py-4 mt-5 border-top border-secondary text-secondary">
+    <div class="container">
+      <p class="mb-0">&copy; 2026 Fixed Gear Astana | Zharkyn Abay</p>
+    </div>
+  </footer>
+
+  <!-- Bootstrap JS нужен только для бургер-меню навигации -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

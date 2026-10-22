@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Price Game - Fixed Gear Astana</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="css/tasks.css">
+  <!-- Task 1: свой JS-файл. defer = скрипт выполнится, когда HTML уже загружен -->
+  <script src="js/game.js" defer></script>
+</head>
+<body class="tasks-page">
+
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark border-bottom border-secondary">
+    <div class="container">
+      <a class="navbar-brand" href="index.html">Fixed Gear Astana</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+          <li class="nav-item"><a class="nav-link text-warning" href="build.html">Order a Build</a></li>
+          <li class="nav-item"><a class="nav-link active" aria-current="page" href="game.html">Price Game</a></li>
+          <li class="nav-item"><a class="nav-link" href="workshop.html">Workshop</a></li>
+          <li class="nav-item"><a class="nav-link" href="rider.html">Rider Card</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container py-5">
+    <header class="page-head">
+      <p class="page-eyebrow">Task 1 · Browser game</p>
+      <h1>Higher or Lower: part prices</h1>
+      <p class="page-lead">Is the next bike part more or less expensive than this one? Guess right to build a streak. A wrong guess costs one life. The same price counts as a right guess.</p>
+    </header>
+
+    <div class="row g-4">
+      <!-- Игровое поле -->
+      <div class="col-12 col-lg-8">
+        <section class="panel game" id="game" aria-labelledby="game-title">
+          <h2 class="visually-hidden" id="game-title">Game</h2>
+
+          <!-- Состояние игры: жизни, серия, рекорд -->
+          <div class="game-stats">
+            <div class="stat">
+              <span class="stat-label">Lives</span>
+              <span class="lives" id="lives" role="img" aria-label="Lives left"></span>
+            </div>
+            <div class="stat">
+              <span class="stat-label">Streak</span>
+              <span class="stat-value" id="streak">0</span>
+            </div>
+            <div class="stat">
+              <span class="stat-label">Best streak</span>
+              <span class="stat-value" id="best">0</span>
+            </div>
+            <div class="stat">
+              <span class="stat-label">Goal</span>
+              <span class="stat-value" id="goal">0</span>
+            </div>
+          </div>
+
+          <!-- Текущая запчасть и следующая (скрытая) -->
+          <div class="part-cards">
+            <article class="part-card">
+              <p class="part-label">Current part</p>
+              <h3 class="part-name" id="current-name">—</h3>
+              <p class="part-price" id="current-price">—</p>
+            </article>
+            <article class="part-card part-card-next">
+              <p class="part-label">Next part</p>
+              <h3 class="part-name" id="next-name">—</h3>
+              <p class="part-price part-price-hidden">? ₸</p>
+            </article>
+          </div>
+
+          <!-- Сообщение о результате хода. aria-live: экранный диктор прочитает его сам -->
+          <p class="game-message" id="message" role="status" aria-live="polite"></p>
+
+          <!-- Кнопки хода -->
+          <div class="game-actions">
+            <button type="button" class="btn btn-game btn-higher" id="btn-higher">Higher ▲</button>
+            <button type="button" class="btn btn-game btn-lower" id="btn-lower">Lower ▼</button>
+          </div>
+
+          <!-- Ход с клавиатуры: можно напечатать ответ. Неправильный ввод отклоняется -->
+          <form class="guess-form" id="guess-form">
+            <label for="guess-input" class="form-label">Or type your guess: <b>higher</b>, <b>lower</b>, <b>h</b> or <b>l</b></label>
+            <div class="guess-row">
+              <input type="text" class="form-control tasks-input" id="guess-input" autocomplete="off" maxlength="10">
+              <button type="submit" class="btn btn-outline-warning" id="btn-guess">Guess</button>
+            </div>
+          </form>
+
+          <button type="button" class="btn btn-warning btn-restart" id="btn-restart" hidden>Play again</button>
+        </section>
+      </div>
+
+      <!-- Правила и история -->
+      <div class="col-12 col-lg-4">
+        <section class="panel" aria-labelledby="rules-title">
+          <h2 class="panel-title" id="rules-title">Rules</h2>
+          <ul class="rules-list" id="rules-list"></ul>
+        </section>
+
+        <section class="panel mt-4" aria-labelledby="history-title">
+          <h2 class="panel-title" id="history-title">Last rounds</h2>
+          <ol class="history" id="history"></ol>
+        </section>
+      </div>
+    </div>
+  </main>
+
+  <footer class="text-center py-4 mt-5 border-top border-secondary text-secondary">
+    <div class="container">
+      <p class="mb-0">&copy; 2026 Fixed Gear Astana | Zharkyn Abay</p>
+    </div>
+  </footer>
+
+  <!-- Bootstrap JS нужен только для бургер-меню навигации, игра его не использует -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

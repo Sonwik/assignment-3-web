@@ -1,0 +1,629 @@
+/* =========================================================
+   Assignment 5 — общие стили для game.html, workshop.html, rider.html
+   Цвета взяты с сайта: тёмный фон, серые карточки, жёлтый акцент
+   (как кнопка "Send Request" и ссылка "Order a Build")
+   ========================================================= */
+:root {
+  --fg-bg: #212529;
+  --fg-card: #343a40;
+  --fg-card-2: #2b3035;
+  --fg-border: #495057;
+  --fg-text: #f8f9fa;
+  --fg-muted: #adb5bd;
+  --fg-accent: #ffc107;
+  --fg-accent-dark: #e0a800;
+  --fg-ok: #3dd68c;
+  --fg-ok-bg: rgba(61, 214, 140, 0.12);
+  --fg-bad: #ff6b6b;
+  --fg-bad-bg: rgba(255, 107, 107, 0.12);
+  --fg-warn-bg: rgba(255, 193, 7, 0.12);
+  --fg-radius: 12px;
+}
+
+.tasks-page {
+  background-color: var(--fg-bg);
+  color: var(--fg-text);
+}
+
+/* ---------- Заголовок страницы ---------- */
+.page-head {
+  margin-bottom: 2rem;
+}
+.page-eyebrow {
+  color: var(--fg-accent);
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 0.25rem;
+}
+.page-head h1 {
+  font-weight: 700;
+}
+.page-lead {
+  color: var(--fg-muted);
+  max-width: 42rem;
+}
+
+/* ---------- Панели (как .form-container на build.html) ---------- */
+.panel {
+  background-color: var(--fg-card);
+  border: 1px solid var(--fg-border);
+  border-radius: var(--fg-radius);
+  padding: 1.5rem;
+}
+.panel-title {
+  font-size: 1.15rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+
+/* ---------- Поля ввода в тёмной теме ---------- */
+.tasks-input,
+.tasks-input:focus {
+  background-color: var(--fg-bg);
+  color: var(--fg-text);
+  border-color: var(--fg-border);
+}
+.tasks-input::placeholder {
+  color: #8a939b;
+}
+.tasks-input:focus {
+  border-color: var(--fg-accent);
+  box-shadow: 0 0 0 0.2rem rgba(255, 193, 7, 0.3);
+}
+
+/* Видимый фокус для работы с клавиатуры: на всех кнопках и ссылках */
+.tasks-page .btn:focus-visible,
+.tasks-page a:focus-visible {
+  outline: 3px solid var(--fg-accent);
+  outline-offset: 2px;
+  box-shadow: none;
+}
+
+/* Выключенные кнопки */
+.tasks-page .btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* Пустой список */
+.empty-state {
+  color: var(--fg-muted);
+  font-style: italic;
+  border: 1px dashed var(--fg-border);
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+  margin: 0;
+  list-style: none;
+}
+
+/* Общие сообщения */
+.notice {
+  min-height: 1.5rem;
+  margin: 1rem 0;
+  border-radius: 8px;
+}
+.notice:empty {
+  margin: 0;
+}
+.notice-success,
+.notice-error,
+.notice-empty {
+  padding: 0.6rem 1rem;
+}
+.notice-success { background-color: var(--fg-ok-bg); color: var(--fg-ok); border-left: 4px solid var(--fg-ok); }
+.notice-error   { background-color: var(--fg-bad-bg); color: var(--fg-bad); border-left: 4px solid var(--fg-bad); }
+.notice-empty   { background-color: var(--fg-warn-bg); color: var(--fg-accent); border-left: 4px solid var(--fg-accent); }
+
+/* =========================================================
+   TASK 1 — игра
+   ========================================================= */
+.game-stats {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+@media (min-width: 576px) {
+  .game-stats { grid-template-columns: repeat(4, 1fr); }
+}
+.stat {
+  background-color: var(--fg-card-2);
+  border: 1px solid var(--fg-border);
+  border-radius: 10px;
+  padding: 0.6rem 0.8rem;
+}
+.stat-label {
+  display: block;
+  color: var(--fg-muted);
+  font-size: 0.8rem;
+}
+.stat-value {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--fg-accent);
+}
+.lives {
+  font-size: 1.5rem;
+  letter-spacing: 0.15rem;
+}
+.life { color: var(--fg-bad); }
+.life-lost { color: var(--fg-border); }
+
+.part-cards {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+@media (min-width: 576px) {
+  .part-cards { grid-template-columns: 1fr 1fr; }
+}
+.part-card {
+  background-color: var(--fg-card-2);
+  border: 1px solid var(--fg-border);
+  border-radius: var(--fg-radius);
+  padding: 1.25rem;
+}
+.part-card-next {
+  border-style: dashed;
+}
+.part-label {
+  color: var(--fg-muted);
+  font-size: 0.85rem;
+  margin-bottom: 0.25rem;
+}
+.part-name {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin-bottom: 0.25rem;
+}
+.part-price {
+  font-size: 1.75rem;
+  font-weight: 800;
+  color: var(--fg-accent);
+  margin: 0;
+}
+.part-price-hidden {
+  color: var(--fg-muted);
+}
+
+.game-message {
+  margin: 1.25rem 0;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  border-left: 4px solid var(--fg-border);
+  background-color: var(--fg-card-2);
+}
+.msg-info    { border-left-color: var(--fg-muted); }
+.msg-success { border-left-color: var(--fg-ok); color: var(--fg-ok); background-color: var(--fg-ok-bg); }
+.msg-error   { border-left-color: var(--fg-bad); color: var(--fg-bad); background-color: var(--fg-bad-bg); }
+.msg-warning { border-left-color: var(--fg-accent); color: var(--fg-accent); background-color: var(--fg-warn-bg); }
+.msg-win     { border-left-color: var(--fg-ok); color: #0b2a1b; background-color: var(--fg-ok); font-weight: 700; }
+.msg-loss    { border-left-color: var(--fg-bad); color: #2a0b0b; background-color: var(--fg-bad); font-weight: 700; }
+
+.game-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+}
+.btn-game {
+  font-weight: 700;
+  font-size: 1.1rem;
+  padding: 0.75rem;
+  border: 2px solid var(--fg-border);
+  color: var(--fg-text);
+  background-color: var(--fg-card-2);
+}
+.btn-higher:hover:not(:disabled) { border-color: var(--fg-ok); color: var(--fg-ok); background-color: var(--fg-ok-bg); }
+.btn-lower:hover:not(:disabled)  { border-color: var(--fg-bad); color: var(--fg-bad); background-color: var(--fg-bad-bg); }
+
+.guess-form {
+  margin-top: 1.25rem;
+}
+.guess-row {
+  display: flex;
+  gap: 0.5rem;
+}
+.btn-restart {
+  margin-top: 1.25rem;
+  width: 100%;
+  font-weight: 700;
+}
+
+/* Рамка всего поля игры при победе / поражении */
+.game-win  { border-color: var(--fg-ok); box-shadow: 0 0 0 3px var(--fg-ok-bg); }
+.game-loss { border-color: var(--fg-bad); box-shadow: 0 0 0 3px var(--fg-bad-bg); }
+
+.rules-list {
+  padding-left: 1.1rem;
+  color: var(--fg-muted);
+  margin: 0;
+}
+.rules-list li + li { margin-top: 0.4rem; }
+
+.history {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  display: grid;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+}
+.history-right,
+.history-wrong {
+  padding: 0.45rem 0.75rem;
+  border-radius: 8px;
+}
+.history-right { background-color: var(--fg-ok-bg); color: var(--fg-ok); }
+.history-wrong { background-color: var(--fg-bad-bg); color: var(--fg-bad); }
+
+/* =========================================================
+   TASK 2 — Kanban
+   ========================================================= */
+.toolbar {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+@media (min-width: 768px) {
+  .toolbar { grid-template-columns: 2fr 1fr 1fr; }
+}
+
+.progress-panel {
+  margin-bottom: 0.5rem;
+}
+.kb-progress {
+  width: 100%;
+  height: 0.9rem;
+  appearance: none;
+  border: none;
+  border-radius: 999px;
+  overflow: hidden;
+  background-color: var(--fg-card-2);
+  accent-color: var(--fg-ok);
+}
+.kb-progress::-webkit-progress-bar { background-color: var(--fg-card-2); }
+.kb-progress::-webkit-progress-value { background-color: var(--fg-ok); }
+.kb-progress::-moz-progress-bar { background-color: var(--fg-ok); }
+.kb-progress-text {
+  color: var(--fg-muted);
+  margin: 0.5rem 0 0;
+}
+
+.board {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+@media (min-width: 992px) {
+  .board { grid-template-columns: repeat(3, 1fr); }
+}
+.kb-column {
+  background-color: var(--fg-card);
+  border: 1px solid var(--fg-border);
+  border-radius: var(--fg-radius);
+  padding: 1rem;
+}
+.kb-column-full {
+  border-color: var(--fg-accent);
+}
+.kb-column-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.75rem;
+}
+.kb-column-head h2 {
+  font-size: 1.05rem;
+  font-weight: 700;
+  margin: 0;
+}
+.kb-count {
+  background-color: var(--fg-card-2);
+  border: 1px solid var(--fg-border);
+  border-radius: 999px;
+  padding: 0.1rem 0.6rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+.kb-column-full .kb-count {
+  border-color: var(--fg-accent);
+  color: var(--fg-accent);
+}
+.kb-list {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.kb-card {
+  background-color: var(--fg-card-2);
+  border: 1px solid var(--fg-border);
+  border-left: 4px solid var(--fg-border);
+  border-radius: 10px;
+  padding: 0.85rem;
+  transition: border-color 0.15s ease, transform 0.15s ease;
+}
+.kb-card:hover {
+  border-color: var(--fg-muted);
+  transform: translateY(-2px);
+}
+.priority-3 { border-left-color: var(--fg-bad); }
+.priority-2 { border-left-color: var(--fg-accent); }
+.priority-1 { border-left-color: var(--fg-muted); }
+.kb-card-done {
+  opacity: 0.75;
+}
+.kb-card-done .kb-card-title {
+  text-decoration: line-through;
+}
+.kb-card-title {
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+.kb-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin-bottom: 0.75rem;
+  font-size: 0.8rem;
+}
+.kb-meta span {
+  border-radius: 999px;
+  padding: 0.1rem 0.55rem;
+  border: 1px solid var(--fg-border);
+  color: var(--fg-muted);
+}
+.kb-tag { color: var(--fg-text); }
+.kb-urgent {
+  border-color: var(--fg-bad);
+  color: var(--fg-bad);
+  font-weight: 700;
+}
+.kb-actions {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+.kb-btn {
+  border: 1px solid var(--fg-border);
+  color: var(--fg-text);
+  background-color: transparent;
+}
+.kb-btn:hover:not(:disabled) {
+  border-color: var(--fg-accent);
+  color: var(--fg-accent);
+}
+.kb-btn-next:hover:not(:disabled) {
+  background-color: var(--fg-accent);
+  color: var(--fg-bg);
+}
+
+/* =========================================================
+   TASK 3 — форма райдера
+   ========================================================= */
+.field {
+  margin-bottom: 1.25rem;
+  border: 0;
+  padding: 0;
+  min-width: 0;
+}
+.req { color: var(--fg-accent); }
+/* legend по умолчанию крупнее, делаем как обычные подписи */
+.field > legend {
+  font-size: 1rem;
+}
+.field-hint {
+  color: var(--fg-muted);
+  font-size: 0.85rem;
+  margin: 0.35rem 0 0;
+}
+/* Место под ошибку зарезервировано (одна строка), чтобы форма не "прыгала",
+   когда ошибка появляется */
+.field-error {
+  color: var(--fg-bad);
+  font-size: 0.9rem;
+  margin: 0.35rem 0 0;
+  min-height: 1.35rem;
+}
+
+/* Состояния полей: ошибка и успех (классы ставит JavaScript) */
+.tasks-input.is-invalid,
+.tasks-input.is-invalid:focus {
+  border-color: var(--fg-bad);
+  box-shadow: 0 0 0 0.2rem var(--fg-bad-bg);
+}
+.tasks-input.is-valid,
+.tasks-input.is-valid:focus {
+  border-color: var(--fg-ok);
+}
+/* Bootstrap рисует свои иконки у .is-valid / .is-invalid — в тёмной теме они лишние */
+.tasks-input.is-invalid,
+.tasks-input.is-valid {
+  background-image: none;
+  padding-right: 0.75rem;
+}
+.field-invalid > legend { color: var(--fg-bad); }
+
+/* Сводка ошибок вверху формы */
+.error-summary {
+  background-color: var(--fg-bad-bg);
+  border: 1px solid var(--fg-bad);
+  border-radius: 10px;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+}
+.error-summary:focus {
+  outline: 3px solid var(--fg-bad);
+}
+.error-summary-title {
+  font-weight: 700;
+  color: var(--fg-bad);
+  margin-bottom: 0.5rem;
+}
+.error-summary ul {
+  margin: 0;
+  padding-left: 1.1rem;
+}
+.error-summary a {
+  color: var(--fg-text);
+}
+.error-summary a:hover {
+  color: var(--fg-bad);
+}
+
+/* Цвета рамы: radio спрятаны классом btn-check, видимая часть — label */
+.swatches {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+.swatch {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.4rem 0.8rem 0.4rem 0.5rem;
+  border: 2px solid var(--fg-border);
+  border-radius: 999px;
+  cursor: pointer;
+  user-select: none;
+}
+.swatch::before {
+  content: "";
+  width: 1.1rem;
+  height: 1.1rem;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+.swatch:hover { border-color: var(--fg-muted); }
+.btn-check:checked + .swatch {
+  border-color: var(--fg-accent);
+  background-color: var(--fg-warn-bg);
+}
+.btn-check:focus-visible + .swatch,
+.btn-check:focus + .swatch {
+  outline: 3px solid var(--fg-accent);
+  outline-offset: 2px;
+}
+.field-invalid .swatch { border-color: var(--fg-bad); }
+
+.swatch-yellow::before { background-color: #ffc107; }
+.swatch-red::before    { background-color: #e5383b; }
+.swatch-blue::before   { background-color: #3a86ff; }
+.swatch-green::before  { background-color: #2ec27e; }
+.swatch-white::before  { background-color: #f8f9fa; }
+
+/* Навыки */
+.skills-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.75rem;
+}
+@media (min-width: 576px) {
+  .skills-grid { grid-template-columns: repeat(4, 1fr); }
+}
+.points-counter {
+  display: inline-block;
+  font-weight: 700;
+  border-radius: 999px;
+  padding: 0.15rem 0.75rem;
+  margin-bottom: 0.75rem;
+}
+.counter-left { background-color: var(--fg-warn-bg); color: var(--fg-accent); }
+.counter-ok   { background-color: var(--fg-ok-bg); color: var(--fg-ok); }
+.counter-over { background-color: var(--fg-bad-bg); color: var(--fg-bad); }
+
+.form-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+.form-actions .btn-warning {
+  font-weight: 700;
+}
+.form-actions .btn-warning:hover {
+  background-color: var(--fg-accent-dark);
+}
+
+/* Карточка райдера */
+.rider-card {
+  background-color: var(--fg-card-2);
+  border: 1px solid var(--fg-border);
+  border-top: 6px solid var(--fg-border);
+  border-radius: var(--fg-radius);
+  padding: 1.25rem;
+}
+.frame-yellow { border-top-color: #ffc107; }
+.frame-red    { border-top-color: #e5383b; }
+.frame-blue   { border-top-color: #3a86ff; }
+.frame-green  { border-top-color: #2ec27e; }
+.frame-white  { border-top-color: #f8f9fa; }
+
+.rider-card-label {
+  color: var(--fg-muted);
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 0.25rem;
+}
+.rider-card-name {
+  font-size: 1.4rem;
+  font-weight: 800;
+  margin-bottom: 0.25rem;
+  overflow-wrap: anywhere;
+}
+.rider-card-info {
+  color: var(--fg-muted);
+  margin-bottom: 1rem;
+}
+.rider-skills {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 0.5rem;
+}
+.rider-skills li {
+  display: grid;
+  grid-template-columns: 5.5rem 1fr 1.75rem;
+  align-items: center;
+  gap: 0.5rem;
+}
+.rider-skills b {
+  text-align: right;
+}
+.rider-skills progress {
+  width: 100%;
+  height: 0.6rem;
+  appearance: none;
+  border: none;
+  border-radius: 999px;
+  overflow: hidden;
+  background-color: var(--fg-bg);
+  accent-color: var(--fg-accent);
+}
+.rider-skills progress::-webkit-progress-bar { background-color: var(--fg-bg); }
+.rider-skills progress::-webkit-progress-value { background-color: var(--fg-accent); }
+.rider-skills progress::-moz-progress-bar { background-color: var(--fg-accent); }
+
+.rider-card-final {
+  border-color: var(--fg-ok);
+}
+.riders {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+@media (min-width: 768px) {
+  .riders { grid-template-columns: repeat(2, 1fr); }
+}
+@media (min-width: 1200px) {
+  .riders { grid-template-columns: repeat(3, 1fr); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .kb-card { transition: none; }
+  .kb-card:hover { transform: none; }
+}

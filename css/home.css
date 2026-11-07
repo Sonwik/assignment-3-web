@@ -64,7 +64,7 @@
   border-radius: 18px;
   overflow: hidden;
   border: 1px solid var(--fg-border);
-  box-shadow: 14px 14px 0 var(--fg-accent);
+  box-shadow: 14px 14px 0 var(--bike-frame);
 }
 .hero-photo img {
   display: block;
@@ -78,7 +78,8 @@
   bottom: 12px;
   padding: 0.4rem 0.75rem;
   border-radius: 999px;
-  background-color: rgba(22, 25, 28, 0.85);
+  background-color: var(--fg-card);
+  color: var(--fg-text);
   font-size: 0.85rem;
   font-weight: 600;
 }
@@ -133,18 +134,18 @@
   height: auto;
   overflow: visible;
 }
-.bike .tire      { fill: none; stroke: #f8f9fa; stroke-width: 5; }
+.bike .tire      { fill: none; stroke: var(--bike-tire); stroke-width: 5; }
 .bike .rim       { fill: none; stroke: #6c757d; stroke-width: 6; }
-.bike .spokes    { stroke: #adb5bd; stroke-width: 1.5; }
-.bike .hub       { fill: var(--fg-accent); }
-.bike .trispoke  { fill: #f8f9fa; }
+.bike .spokes    { stroke: var(--bike-spoke); stroke-width: 1.5; }
+.bike .hub       { fill: var(--bike-frame); }
+.bike .trispoke  { fill: var(--bike-tire); }
 .bike .frame polyline,
-.bike .frame line { fill: none; stroke: var(--fg-accent); stroke-width: 6; stroke-linejoin: round; stroke-linecap: round; }
+.bike .frame line { fill: none; stroke: var(--bike-frame); stroke-width: 6; stroke-linejoin: round; stroke-linecap: round; }
 .bike .drivetrain circle,
-.bike .drivetrain line { fill: none; stroke: #ced4da; stroke-width: 2; }
-.bike .drivetrain .crank { stroke: #f8f9fa; stroke-width: 4; stroke-linecap: round; }
+.bike .drivetrain line { fill: none; stroke: var(--bike-metal); stroke-width: 2; }
+.bike .drivetrain .crank { stroke: var(--bike-tire); stroke-width: 4; stroke-linecap: round; }
 .bike .cockpit line,
-.bike .cockpit path { fill: none; stroke: #f8f9fa; stroke-width: 4; stroke-linecap: round; }
+.bike .cockpit path { fill: none; stroke: var(--bike-tire); stroke-width: 4; stroke-linecap: round; }
 
 /* Во время скида заднее колесо "горит" жёлтым — видно, что оно заблокировано */
 .bike.is-skidding #wheel-rear .tire {
@@ -241,7 +242,7 @@ kbd {
 }
 .patch-tire .patch-tire-ring {
   fill: none;
-  stroke: #f8f9fa;
+  stroke: var(--bike-tire);
   stroke-width: 10;
 }
 .patch-tire .patch-tire-rim {
@@ -574,6 +575,7 @@ kbd {
 }
 .gallery-open {
   display: block;
+  width: 100%;              /* кнопка по умолчанию не растягивается — фото обрезалось */
   padding: 0;
   border: 0;
   background: none;

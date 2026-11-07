@@ -22,6 +22,37 @@
   --fg-warn-bg: rgba(255, 193, 7, 0.12);
   --fg-radius: 12px;
   --fg-font-display: "Archivo", system-ui, -apple-system, "Segoe UI", sans-serif;
+
+  /* Цвета нарисованного велосипеда (hero) */
+  --bike-frame: #ffc107;
+  --bike-tire: #f8f9fa;
+  --bike-metal: #ced4da;
+  --bike-spoke: #adb5bd;
+}
+
+/* ---------- Светлая тема: те же переменные, другие значения ----------
+   Атрибут data-theme ставит js/navbar.js. Компоненты используют только
+   переменные, поэтому вся тема меняется в одном месте. */
+:root[data-theme="light"] {
+  --fg-bg: #f4f3ef;
+  --fg-bg-deep: #ffffff;
+  --fg-card: #ffffff;
+  --fg-card-2: #f1f0eb;
+  --fg-border: #d3d1c9;
+  --fg-text: #1b1e21;
+  --fg-muted: #5a6168;
+  --fg-accent: #8a5a00;        /* тёмный янтарный: жёлтый текст на белом не читается */
+  --fg-accent-dark: #6e4800;
+  --fg-ok: #17803d;
+  --fg-ok-bg: rgba(23, 128, 61, 0.1);
+  --fg-bad: #c92a2a;
+  --fg-bad-bg: rgba(201, 42, 42, 0.08);
+  --fg-warn-bg: rgba(255, 193, 7, 0.2);
+
+  --bike-frame: #e0a800;
+  --bike-tire: #212529;
+  --bike-metal: #6c757d;
+  --bike-spoke: #868e96;
 }
 
 /* ---------- База ---------- */
@@ -35,6 +66,11 @@ section[id] {
 }
 body {
   background-color: var(--fg-bg);
+  color: var(--fg-text);
+  transition: background-color 0.3s ease, color 0.3s ease;   /* плавная смена темы */
+}
+
+kbd {
   color: var(--fg-text);
 }
 
@@ -62,6 +98,9 @@ summary:focus-visible {
 }
 
 /* ---------- Навигация ---------- */
+.site-header {
+  z-index: 1030;
+}
 .site-nav {
   background-color: var(--fg-bg-deep);
   border-bottom: 1px solid var(--fg-border);
@@ -107,6 +146,56 @@ summary:focus-visible {
   }
 }
 
+/* Счётчик запчастей в сборке рядом с "Order a Build" */
+.nav-badge {
+  display: inline-block;
+  min-width: 1.35rem;
+  margin-left: 0.3rem;
+  padding: 0.05rem 0.4rem;
+  border-radius: 999px;
+  background-color: var(--fg-accent);
+  color: var(--fg-bg-deep);
+  font-size: 0.75rem;
+  font-weight: 700;
+  line-height: 1.3;
+  text-align: center;
+}
+.nav-badge[hidden] {
+  display: none;
+}
+
+/* Переключатель темы: солнце в тёмной теме, луна в светлой */
+.theme-toggle {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border: 1px solid var(--fg-border);
+  border-radius: 50%;
+  background-color: transparent;
+  color: var(--fg-text);
+  transition: border-color 0.2s ease, color 0.2s ease, transform 0.3s ease;
+}
+.theme-toggle:hover {
+  border-color: var(--fg-accent);
+  color: var(--fg-accent);
+  transform: rotate(20deg);
+}
+.theme-toggle svg {
+  width: 20px;
+  height: 20px;
+}
+.icon-moon {
+  display: none;
+}
+:root[data-theme="light"] .icon-sun {
+  display: none;
+}
+:root[data-theme="light"] .icon-moon {
+  display: block;
+}
+
 /* ---------- Кнопки: hover-эффекты ---------- */
 .btn {
   transition: transform 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease,
@@ -123,6 +212,24 @@ summary:focus-visible {
 .btn-outline-light:hover,
 .btn-outline-warning:hover {
   transform: translateY(-2px);
+}
+/* В светлой теме "светлая" контурная кнопка стала бы белой на белом — делаем тёмной */
+:root[data-theme="light"] .btn-outline-light {
+  --bs-btn-color: var(--fg-text);
+  --bs-btn-border-color: var(--fg-text);
+  --bs-btn-hover-color: var(--fg-bg-deep);
+  --bs-btn-hover-bg: var(--fg-text);
+  --bs-btn-hover-border-color: var(--fg-text);
+  --bs-btn-active-color: var(--fg-bg-deep);
+  --bs-btn-active-bg: var(--fg-text);
+}
+/* Жёлтая контурная кнопка в светлой теме — янтарная, чтобы текст читался */
+:root[data-theme="light"] .btn-outline-warning {
+  --bs-btn-color: var(--fg-accent);
+  --bs-btn-border-color: var(--fg-accent);
+  --bs-btn-hover-color: var(--fg-bg-deep);
+  --bs-btn-hover-bg: var(--fg-accent);
+  --bs-btn-hover-border-color: var(--fg-accent);
 }
 .btn:active {
   transform: translateY(0);
@@ -198,7 +305,7 @@ summary:focus-visible {
 .custom-section {
     padding: 48px 20px;
     background-color: var(--fg-bg-deep);
-    color: #fff;
+    color: var(--fg-text);
     border-top: 1px solid var(--fg-border);
     border-bottom: 1px solid var(--fg-border);
 }
@@ -325,7 +432,7 @@ summary:focus-visible {
   padding: 0;
   border: 2px solid var(--fg-accent);
   border-radius: 50%;
-  background-color: var(--fg-bg-deep);
+  background-color: #16191c;   /* тёмный кружок в обеих темах — колесо на нём видно всегда */
   display: none;              /* jQuery показывает его через fadeIn() */
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.45);
   transition: border-color 0.2s ease, box-shadow 0.2s ease;

@@ -6,7 +6,7 @@
 // тогда сайт просто продолжит работать без сохранения.
 // =====================================================
 
-const BUILD_KEY = 'fga-build';   // массив id запчастей, например [1, 3, 7]
+// BUILD_KEY ('fga-build') объявлен в js/navbar.js — он подключён на всех страницах
 const GEAR_KEY = 'fga-gear';     // строка передачи, например "48x17"
 
 function loadBuild() {
@@ -30,6 +30,8 @@ function saveBuild(ids) {
   } catch (error) {
     // сохранить не получилось — на этой странице всё равно работает
   }
+  // сообщаем навигации (js/navbar.js), чтобы обновить счётчик
+  window.dispatchEvent(new Event('buildchange'));
 }
 
 function loadGear() {
@@ -55,4 +57,5 @@ function clearSavedOrder() {
   } catch (error) {
     // ничего страшного
   }
+  window.dispatchEvent(new Event('buildchange'));
 }

@@ -39,6 +39,7 @@ const sumSize = document.querySelector('#sum-size');
 const sumGear = document.querySelector('#sum-gear');
 const sumParts = document.querySelector('#summary-parts');
 const sumTotal = document.querySelector('#sum-total');
+const clearPartsButton = document.querySelector('#btn-clear-parts');
 
 let buildIds = loadBuild();        // запчасти из каталога на главной
 const touched = new Set();         // поля, из которых уже уходили
@@ -312,6 +313,8 @@ function renderSummary() {
     sumParts.appendChild(item);
   }
 
+  clearPartsButton.hidden = buildIds.length === 0;   // нечего очищать — кнопки нет
+
   // Итог = база + запчасти
   if (base === undefined) {
     sumTotal.textContent = buildIds.length > 0 ? formatPrice(getPartsTotal()) + ' + base' : '—';
@@ -472,6 +475,14 @@ sumParts.addEventListener('click', function (event) {
   saveBuild(buildIds);
   renderSummary();
   sumParts.querySelector('.btn-remove, a').focus();
+});
+
+// Очистить всю сборку
+clearPartsButton.addEventListener('click', function () {
+  buildIds = [];
+  saveBuild(buildIds);
+  renderSummary();
+  sumParts.querySelector('a').focus();     // фокус на ссылку "Pick parts in the catalog"
 });
 
 // Закрыть сообщение об успехе

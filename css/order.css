@@ -22,6 +22,8 @@
   border-radius: var(--fg-radius);
 }
 .price-table {
+  --bs-table-color: var(--fg-text);
+  --bs-table-hover-color: var(--fg-text);
   --bs-table-bg: var(--fg-card);
   --bs-table-hover-bg: var(--fg-card-2);
   --bs-table-border-color: var(--fg-border);
@@ -187,9 +189,24 @@
   font-weight: 700;
   text-align: right;
 }
+.summary-subhead {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-top: 1.25rem;
+}
 .summary-subtitle {
   font-size: 1rem;
-  margin-top: 1.25rem;
+  margin: 0 0 0.5rem;
+}
+.btn-clear-parts {
+  color: var(--fg-accent);
+  padding: 0;
+  text-decoration: none;
+}
+.btn-clear-parts:hover {
+  color: var(--fg-bad);
+  text-decoration: underline;
 }
 .summary-parts {
   list-style: none;

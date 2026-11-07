@@ -1,0 +1,271 @@
+/* =========================================================
+   Страница заказа (build.html): таблица цен, форма, сводка заказа
+   ========================================================= */
+
+.page-head {
+  margin-bottom: 2.5rem;
+}
+.page-head h1 {
+  font-size: clamp(2rem, 5vw, 3rem);
+  text-transform: uppercase;
+}
+.page-lead {
+  color: var(--fg-muted);
+  max-width: 42rem;
+  font-size: 1.05rem;
+}
+
+/* ---------- Таблица цен ---------- */
+.price-table-wrap {
+  position: relative;           /* скрытый текст в заголовке не вылезает за экран */
+  border: 1px solid var(--fg-border);
+  border-radius: var(--fg-radius);
+}
+.price-table {
+  --bs-table-bg: var(--fg-card);
+  --bs-table-hover-bg: var(--fg-card-2);
+  --bs-table-border-color: var(--fg-border);
+}
+.price-table thead th {
+  background-color: var(--fg-bg-deep);
+  color: var(--fg-muted);
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  white-space: nowrap;
+}
+.price-table tbody th {
+  font-family: var(--fg-font-display);
+  white-space: nowrap;
+}
+.price-cell {
+  color: var(--fg-accent);
+  font-weight: 700;
+  white-space: nowrap;
+}
+.price-table tr.is-chosen > * {
+  --bs-table-bg: var(--fg-warn-bg);
+}
+
+/* На телефоне таблица превращается в карточки: строка = карточка */
+@media (max-width: 767.98px) {
+  .price-table-wrap {
+    border: 0;
+  }
+  .price-table thead {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+  }
+  .price-table,
+  .price-table tbody,
+  .price-table tr,
+  .price-table th,
+  .price-table td {
+    display: block;
+    width: 100%;
+  }
+  .price-table tr {
+    border: 1px solid var(--fg-border);
+    border-radius: var(--fg-radius);
+    overflow: hidden;
+    margin-bottom: 0.75rem;
+  }
+  .price-table tbody th {
+    font-size: 1.1rem;
+    border-bottom: 1px solid var(--fg-border);
+  }
+  .price-table td {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    border: 0;
+    padding-top: 0.3rem;
+    padding-bottom: 0.3rem;
+  }
+  /* подпись колонки берётся из data-label */
+  .price-table td[data-label]::before {
+    content: attr(data-label);
+    color: var(--fg-muted);
+  }
+  .price-table td:last-child {
+    padding-bottom: 0.75rem;
+  }
+  .price-table .btn-choose {
+    width: 100%;
+  }
+}
+
+/* ---------- Форма ---------- */
+.field {
+  margin-bottom: 0.75rem;
+}
+.req {
+  color: var(--fg-accent);
+}
+.optional {
+  color: var(--fg-muted);
+  font-size: 0.85rem;
+}
+.field-hint {
+  color: var(--fg-muted);
+  font-size: 0.85rem;
+  margin: 0.35rem 0 0;
+}
+.field-hint.hint-ok {
+  color: var(--fg-ok);
+}
+.field-hint.hint-bad {
+  color: var(--fg-bad);
+}
+.fg-input.is-valid,
+.fg-input.is-valid:focus {
+  border-color: var(--fg-ok);
+  background-image: none;
+}
+/* у даты иконка календаря светлая — под тёмную тему */
+.date-input {
+  color-scheme: dark;
+}
+.form-check-input {
+  background-color: var(--fg-bg);
+  border-color: var(--fg-muted);
+}
+.form-check-input:checked {
+  background-color: var(--fg-accent);
+  border-color: var(--fg-accent);
+}
+.form-check-input:focus {
+  border-color: var(--fg-accent);
+  box-shadow: 0 0 0 0.2rem rgba(255, 193, 7, 0.3);
+}
+.form-check-input.is-invalid {
+  border-color: var(--fg-bad);
+}
+.form-check-input.is-invalid ~ .form-check-label {
+  color: var(--fg-text);
+}
+
+/* Общее сообщение над формой: "Please fix 3 fields" */
+.form-status:empty {
+  display: none;
+}
+.form-status {
+  background-color: var(--fg-bad-bg);
+  border-left: 4px solid var(--fg-bad);
+  color: var(--fg-bad);
+  border-radius: 8px;
+  padding: 0.6rem 1rem;
+  font-weight: 600;
+}
+
+/* ---------- Сводка заказа ---------- */
+@media (min-width: 992px) {
+  .order-summary {
+    position: sticky;
+    top: 84px;
+  }
+}
+.summary-title {
+  font-size: 1.3rem;
+}
+.summary-lines > div {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.45rem 0;
+  border-bottom: 1px solid var(--fg-border);
+}
+.summary-lines dt {
+  color: var(--fg-muted);
+  font-weight: 400;
+}
+.summary-lines dd {
+  margin: 0;
+  font-weight: 700;
+  text-align: right;
+}
+.summary-subtitle {
+  font-size: 1rem;
+  margin-top: 1.25rem;
+}
+.summary-parts {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 1rem;
+}
+.summary-parts li {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.4rem 0;
+  border-bottom: 1px dashed var(--fg-border);
+  font-size: 0.95rem;
+}
+.summary-parts .item-name {
+  flex-grow: 1;
+}
+.summary-parts .item-price {
+  color: var(--fg-muted);
+  white-space: nowrap;
+}
+.summary-parts .summary-empty {
+  display: block;
+  color: var(--fg-muted);
+  font-style: italic;
+  border: 1px dashed var(--fg-border);
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+}
+.btn-remove {
+  border: 0;
+  background: transparent;
+  color: var(--fg-muted);
+  font-size: 1.3rem;
+  line-height: 1;
+  padding: 0 0.3rem;
+  border-radius: 6px;
+}
+.btn-remove:hover {
+  color: var(--fg-bad);
+  background-color: var(--fg-bad-bg);
+}
+.summary-total {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 1rem;
+  padding-top: 0.75rem;
+}
+.summary-total span {
+  color: var(--fg-muted);
+}
+.summary-total strong {
+  font-family: var(--fg-font-display);
+  font-size: 1.8rem;
+  color: var(--fg-accent);
+}
+
+/* ---------- Успешный заказ (jQuery slideDown) ---------- */
+.order-success {
+  display: none;
+  background-color: var(--fg-ok-bg);
+  border: 1px solid var(--fg-ok);
+  border-radius: var(--fg-radius);
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+}
+.order-success:focus {
+  outline: 3px solid var(--fg-ok);
+  outline-offset: 3px;
+}
+.success-title {
+  color: var(--fg-ok);
+  font-size: 1.5rem;
+}
+.success-list {
+  padding-left: 1.2rem;
+  margin-bottom: 1rem;
+}

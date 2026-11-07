@@ -3,40 +3,41 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Order a Build - Fixed Gear Astana</title>
-    
+    <title>Order a Build — Fixed Gear Astana</title>
+    <link rel="icon" href="images/wheel.svg" type="image/svg+xml">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;800&display=swap" rel="stylesheet">
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
-    
-    <!-- Немного стилей прямо здесь, чтобы форма и таблица хорошо смотрелись на темном фоне -->
-    <style>
-        body {
-            background-color: #212529;
-            color: #fff;
-        }
-        .form-container {
-            background-color: #343a40;
-            padding: 30px;
-            border-radius: 8px;
-            border: 1px solid #495057;
-        }
-    </style>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/order.css">
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" defer></script>
+    <script src="js/parts-data.js" defer></script>
+    <script src="js/storage.js" defer></script>
+    <script src="js/order.js" defer></script>
+    <script src="js/effects.js" defer></script>
 </head>
 <body>
 
     <!-- Единая навигация -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark border-bottom border-secondary">
+    <nav class="navbar navbar-expand-lg navbar-dark site-nav sticky-top">
         <div class="container">
-            <a class="navbar-brand" href="index.html">Fixed Gear Astana</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <a class="navbar-brand" href="index.html">
+                <img src="images/wheel.svg" class="brand-wheel" alt="" width="28" height="28">
+                Fixed Gear Astana
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
-                    <li class="nav-item"><a class="nav-link" href="index.html#components">Components</a></li>
-                    <li class="nav-item"><a class="nav-link" href="index.html#gallery">Gallery</a></li>
-                    <li class="nav-item"><a class="nav-link active text-warning" href="build.html">Order a Build</a></li>
+                    <li class="nav-item"><a class="nav-link" href="index.html#calculator">Gear Calculator</a></li>
+                    <li class="nav-item"><a class="nav-link" href="index.html#parts">Parts</a></li>
+                    <li class="nav-item"><a class="nav-link active" aria-current="page" href="build.html">Order a Build</a></li>
                     <li class="nav-item"><a class="nav-link" href="game.html">Price Game</a></li>
                     <li class="nav-item"><a class="nav-link" href="workshop.html">Workshop</a></li>
                     <li class="nav-item"><a class="nav-link" href="rider.html">Rider Card</a></li>
@@ -45,100 +46,208 @@
         </div>
     </nav>
 
-    <!-- Секция с таблицей (Требование Мидтерма: минимум 1 таблица) -->
-    <section class="container mt-5 pt-4">
-        <h2 class="text-center mb-4">Estimated Build Prices</h2>
-        <p class="text-center mb-4">Compare our base setups before submitting a request. Prices may vary based on specific components.</p>
-        
-        <div class="table-responsive">
-            <table class="table table-dark table-striped table-hover border-secondary align-middle">
-                <thead>
-                    <tr class="table-secondary text-dark">
-                        <th>Build Type</th>
-                        <th>Frame</th>
-                        <th>Drivetrain</th>
-                        <th>Wheelset</th>
-                        <th>Est. Price (KZT)</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><strong>Street Commuter</strong></td>
-                        <td>Tsunami SNM100</td>
-                        <td>Standard 48T</td>
-                        <td>Alloy 30mm</td>
-                        <td>~120,000 ₸</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Track Aggressive</strong></td>
-                        <td>Tsunami SNM100</td>
-                        <td>SKEACE 48T</td>
-                        <td>Intro7 Track</td>
-                        <td>~165,000 ₸</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Pro Custom</strong></td>
-                        <td>Carbon / Custom Al</td>
-                        <td>SKEACE / Miche</td>
-                        <td>Carbon Tri-spoke</td>
-                        <td>From 250,000 ₸</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </section>
+    <main class="container py-5">
+        <header class="page-head">
+            <p class="page-eyebrow">Order a build</p>
+            <h1>Order your custom fixie</h1>
+            <p class="page-lead">Choose a base build, add the parts from your build list and book a test ride. We call you back within one day to confirm the order.</p>
+        </header>
 
-    <!-- Секция с формой (Требование Мидтерма: минимум 1 форма) -->
-    <section class="container mt-5 mb-5 pb-4">
-        <div class="row justify-content-center">
-            <div class="col-12 col-lg-8">
-                <h2 class="text-center mb-4">Request a Consultation</h2>
-                
-                <div class="form-container">
-                    <form action="#" method="POST">
+        <!-- Таблица цен (Midterm). Кнопка Choose выбирает сборку в форме -->
+        <section class="mb-5" aria-labelledby="prices-title">
+            <h2 class="section-title" id="prices-title">Estimated build prices</h2>
+            <p class="section-lead">Compare our base setups before you send a request. The final price depends on the parts you add.</p>
+
+            <div class="table-responsive price-table-wrap">
+                <table class="table table-dark table-hover align-middle price-table mb-0">
+                    <thead>
+                        <tr>
+                            <th scope="col">Build type</th>
+                            <th scope="col">Frame</th>
+                            <th scope="col">Drivetrain</th>
+                            <th scope="col">Wheelset</th>
+                            <th scope="col">Base price</th>
+                            <th scope="col"><span class="visually-hidden">Choose</span></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th scope="row">Street Commuter</th>
+                            <td data-label="Frame">Tsunami SNM100</td>
+                            <td data-label="Drivetrain">Standard 48T</td>
+                            <td data-label="Wheelset">Alloy 30 mm</td>
+                            <td data-label="Base price" class="price-cell">120 000 ₸</td>
+                            <td><button type="button" class="btn btn-outline-warning btn-sm btn-choose" data-build="street">Choose</button></td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Track Aggressive</th>
+                            <td data-label="Frame">Tsunami SNM100</td>
+                            <td data-label="Drivetrain">SKEACE 48T</td>
+                            <td data-label="Wheelset">Intro7 Track</td>
+                            <td data-label="Base price" class="price-cell">165 000 ₸</td>
+                            <td><button type="button" class="btn btn-outline-warning btn-sm btn-choose" data-build="track">Choose</button></td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Pro Custom</th>
+                            <td data-label="Frame">Carbon / Custom Al</td>
+                            <td data-label="Drivetrain">SKEACE / Miche</td>
+                            <td data-label="Wheelset">Carbon Tri-spoke</td>
+                            <td data-label="Base price" class="price-cell">from 250 000 ₸</td>
+                            <td><button type="button" class="btn btn-outline-warning btn-sm btn-choose" data-build="custom">Choose</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Сообщение после успешного заказа (jQuery slideDown) -->
+        <div class="order-success" id="order-success" role="status" aria-live="polite" tabindex="-1"></div>
+
+        <!-- Форма заказа. JS: js/order.js -->
+        <section id="order" aria-labelledby="order-title">
+            <h2 class="section-title" id="order-title">Request a build</h2>
+            <p class="section-lead">Fields with <span class="req">*</span> are required.</p>
+
+            <div class="row g-4">
+                <div class="col-12 col-lg-7">
+                    <form class="panel order-form" id="order-form" novalidate>
+                        <p class="form-status" id="form-status" role="alert"></p>
+
                         <div class="row">
-                            <div class="col-md-6 mb-3">
-                                <label for="fullName" class="form-label">Full Name</label>
-                                <input type="text" class="form-control bg-dark text-light border-secondary" id="fullName" placeholder="Enter your name" required>
+                            <!-- 1. Имя -->
+                            <div class="col-md-6 field">
+                                <label for="order-name" class="form-label">Full name <span class="req" aria-hidden="true">*</span></label>
+                                <input type="text" class="form-control fg-input" id="order-name" name="name" autocomplete="name" placeholder="Zharkyn Abay" aria-describedby="order-name-error">
+                                <p class="field-error" id="order-name-error"></p>
                             </div>
-                            <div class="col-md-6 mb-3">
-                                <label for="email" class="form-label">Email address</label>
-                                <input type="email" class="form-control bg-dark text-light border-secondary" id="email" placeholder="name@example.com" required>
+                            <!-- 2. Email -->
+                            <div class="col-md-6 field">
+                                <label for="order-email" class="form-label">Email <span class="req" aria-hidden="true">*</span></label>
+                                <input type="email" class="form-control fg-input" id="order-email" name="email" autocomplete="email" placeholder="name@example.com" aria-describedby="order-email-error">
+                                <p class="field-error" id="order-email-error"></p>
                             </div>
                         </div>
 
-                        <div class="mb-3">
-                            <label for="baseModel" class="form-label">Select Base Build</label>
-                            <select class="form-select bg-dark text-light border-secondary" id="baseModel" required>
-                                <option value="" selected disabled>Choose a setup...</option>
-                                <option value="street">Street Commuter</option>
-                                <option value="track">Track Aggressive</option>
-                                <option value="custom">Fully Custom Idea</option>
-                            </select>
+                        <div class="row">
+                            <!-- 3. Телефон -->
+                            <div class="col-md-6 field">
+                                <label for="order-phone" class="form-label">Phone <span class="req" aria-hidden="true">*</span></label>
+                                <input type="tel" class="form-control fg-input" id="order-phone" name="phone" autocomplete="tel" placeholder="+7 701 234 56 78" aria-describedby="order-phone-error">
+                                <p class="field-error" id="order-phone-error"></p>
+                            </div>
+                            <!-- 4. Базовая сборка -->
+                            <div class="col-md-6 field">
+                                <label for="order-build" class="form-label">Base build <span class="req" aria-hidden="true">*</span></label>
+                                <select class="form-select fg-input" id="order-build" name="build" aria-describedby="order-build-error">
+                                    <option value="">Choose a setup…</option>
+                                    <option value="street">Street Commuter — 120 000 ₸</option>
+                                    <option value="track">Track Aggressive — 165 000 ₸</option>
+                                    <option value="custom">Pro Custom — from 250 000 ₸</option>
+                                </select>
+                                <p class="field-error" id="order-build-error"></p>
+                            </div>
                         </div>
 
-                        <div class="mb-3">
-                            <label for="ratio" class="form-label">Preferred Gear Ratio (Optional)</label>
-                            <input type="text" class="form-control bg-dark text-light border-secondary" id="ratio" placeholder="e.g., 48x17">
+                        <div class="row">
+                            <!-- 5. Рост -->
+                            <div class="col-md-6 field">
+                                <label for="order-height" class="form-label">Your height, cm <span class="req" aria-hidden="true">*</span></label>
+                                <input type="number" class="form-control fg-input" id="order-height" name="height" inputmode="numeric" placeholder="178" aria-describedby="order-height-hint order-height-error">
+                                <p class="field-hint" id="order-height-hint">We pick the frame size from your height.</p>
+                                <p class="field-error" id="order-height-error"></p>
+                            </div>
+                            <!-- 6. Передача (необязательно) -->
+                            <div class="col-md-6 field">
+                                <label for="order-gear" class="form-label">Gear ratio <span class="optional">(optional)</span></label>
+                                <input type="text" class="form-control fg-input" id="order-gear" name="gear" placeholder="48x17" aria-describedby="order-gear-hint order-gear-error">
+                                <p class="field-hint" id="order-gear-hint">Not sure? Try the <a href="index.html#calculator">gear calculator</a>.</p>
+                                <p class="field-error" id="order-gear-error"></p>
+                            </div>
                         </div>
 
-                        <div class="mb-4">
-                            <label for="comments" class="form-label">Additional Details</label>
-                            <textarea class="form-control bg-dark text-light border-secondary" id="comments" rows="4" placeholder="Tell us about specific parts you want, color preferences, etc."></textarea>
+                        <!-- 7. Дата тест-райда -->
+                        <div class="field">
+                            <label for="order-date" class="form-label">Test ride date <span class="req" aria-hidden="true">*</span></label>
+                            <input type="date" class="form-control fg-input date-input" id="order-date" name="date" aria-describedby="order-date-hint order-date-error">
+                            <p class="field-hint" id="order-date-hint">The workshop is open Tuesday to Sunday, up to 60 days ahead.</p>
+                            <p class="field-error" id="order-date-error"></p>
+                        </div>
+
+                        <!-- 8. Комментарий -->
+                        <div class="field">
+                            <label for="order-comment" class="form-label">Additional details <span class="optional">(optional)</span></label>
+                            <textarea class="form-control fg-input" id="order-comment" name="comment" rows="4" placeholder="Colors, a front brake, pedal straps…" aria-describedby="order-comment-count order-comment-error"></textarea>
+                            <p class="field-hint" id="order-comment-count">0 / 300</p>
+                            <p class="field-error" id="order-comment-error"></p>
+                        </div>
+
+                        <!-- 9. Согласие -->
+                        <div class="field">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="order-agree" name="agree" aria-describedby="order-agree-error">
+                                <label class="form-check-label" for="order-agree">I understand that a fixed gear bike has no freewheel: the pedals always turn with the wheel. <span class="req" aria-hidden="true">*</span></label>
+                            </div>
+                            <p class="field-error" id="order-agree-error"></p>
                         </div>
 
                         <div class="d-grid">
-                            <button type="submit" class="btn btn-warning fw-bold text-dark">Send Request</button>
+                            <button type="submit" class="btn btn-warning btn-lg">Send request</button>
                         </div>
                     </form>
                 </div>
-            </div>
-        </div>
-    </section>
 
-    <footer class="text-center py-4 mt-5 border-top border-secondary text-secondary">
+                <!-- Сводка заказа: запчасти из каталога + итоговая цена -->
+                <div class="col-12 col-lg-5">
+                    <aside class="panel order-summary" aria-labelledby="summary-title">
+                        <h3 class="summary-title" id="summary-title">Your order</h3>
+                        <dl class="summary-lines">
+                            <div><dt>Base build</dt><dd id="sum-base">not chosen</dd></div>
+                            <div><dt>Frame size</dt><dd id="sum-size">enter your height</dd></div>
+                            <div><dt>Gear</dt><dd id="sum-gear">standard 48×17</dd></div>
+                        </dl>
+                        <h4 class="summary-subtitle">Parts from your build</h4>
+                        <ul class="summary-parts" id="summary-parts"></ul>
+                        <div class="summary-total">
+                            <span>Estimated total</span>
+                            <strong id="sum-total">—</strong>
+                        </div>
+                    </aside>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Колесо "Наверх" -->
+    <button type="button" class="back-to-top" id="back-to-top" aria-label="Back to top">
+        <img src="images/wheel.svg" alt="" width="56" height="56">
+    </button>
+
+    <footer class="site-footer">
         <div class="container">
-            <p class="mb-0">&copy; 2026 Fixed Gear Astana | Zharkyn Abay</p>
+            <div class="row g-4">
+                <div class="col-12 col-md-4">
+                    <p class="footer-title display-font">Fixed Gear Astana</p>
+                    <p class="mb-0">Custom fixed gear builds on the Tsunami SNM100 frame. Made in Astana.</p>
+                </div>
+                <div class="col-6 col-md-3">
+                    <p class="footer-title">Pages</p>
+                    <ul class="footer-links">
+                        <li><a href="index.html#calculator">Gear calculator</a></li>
+                        <li><a href="index.html#parts">Parts catalog</a></li>
+                        <li><a href="build.html">Order a build</a></li>
+                        <li><a href="workshop.html">Workshop board</a></li>
+                    </ul>
+                </div>
+                <div class="col-6 col-md-5">
+                    <p class="footer-title">Credits</p>
+                    <ul class="footer-links">
+                        <li>Photos: Pinterest and AliExpress product photos</li>
+                        <li>Bootstrap 5.3, jQuery 3.7, font Archivo (Google Fonts)</li>
+                        <li>Code written with help of Claude (Anthropic AI)</li>
+                    </ul>
+                </div>
+            </div>
+            <p class="footer-copy mb-0">&copy; 2026 Fixed Gear Astana | Zharkyn Abay</p>
         </div>
     </footer>
 

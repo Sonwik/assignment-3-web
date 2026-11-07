@@ -4,30 +4,46 @@
     <meta charset="UTF-8">
     <!-- Обязательный метатег для работы адаптивности на телефонах -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tsunami SNM100 Custom Build</title>
-    
-    <!-- Подключение Bootstrap 5.3 CSS через CDN -->
+    <title>Fixed Gear Astana — Tsunami SNM100 Custom Builds</title>
+    <link rel="icon" href="images/wheel.svg" type="image/svg+xml">
+
+    <!-- Шрифт для заголовков -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;800&display=swap" rel="stylesheet">
+
+    <!-- Bootstrap 5.3, потом мои стили -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    
-    <!-- Подключение собственного CSS строго после Bootstrap -->
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/home.css">
+
+    <!-- jQuery, потом мои скрипты. defer = выполнятся по порядку, когда HTML загружен -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" defer></script>
+    <script src="js/parts-data.js" defer></script>
+    <script src="js/storage.js" defer></script>
+    <script src="js/bike.js" defer></script>
+    <script src="js/calculator.js" defer></script>
+    <script src="js/catalog.js" defer></script>
+    <script src="js/effects.js" defer></script>
 </head>
 <body>
 
-   <!-- Обновленная Навигация (Navbar) -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark border-bottom border-secondary">
+    <!-- Единая навигация (одинаковая на всех страницах) -->
+    <nav class="navbar navbar-expand-lg navbar-dark site-nav sticky-top">
         <div class="container">
-            <a class="navbar-brand" href="index.html">Fixed Gear Astana</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <a class="navbar-brand" href="index.html">
+                <img src="images/wheel.svg" class="brand-wheel" alt="" width="28" height="28">
+                Fixed Gear Astana
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
-                    <li class="nav-item"><a class="nav-link active" href="index.html">Home</a></li>
-                    <li class="nav-item"><a class="nav-link" href="index.html#components">Components</a></li>
-                    <li class="nav-item"><a class="nav-link" href="index.html#gallery">Gallery</a></li>
-                    <!-- Ссылка на новую страницу -->
-                    <li class="nav-item"><a class="nav-link text-warning" href="build.html">Order a Build</a></li>
+                    <li class="nav-item"><a class="nav-link active" aria-current="page" href="index.html">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="index.html#calculator">Gear Calculator</a></li>
+                    <li class="nav-item"><a class="nav-link" href="index.html#parts">Parts</a></li>
+                    <li class="nav-item"><a class="nav-link" href="build.html">Order a Build</a></li>
                     <li class="nav-item"><a class="nav-link" href="game.html">Price Game</a></li>
                     <li class="nav-item"><a class="nav-link" href="workshop.html">Workshop</a></li>
                     <li class="nav-item"><a class="nav-link" href="rider.html">Rider Card</a></li>
@@ -36,84 +52,371 @@
         </div>
     </nav>
 
-    <!-- Секция Hero (Task 2: Bootstrap Grid, смена порядка, скрытый элемент) -->
-    <section id="hero" class="container mt-5">
-        <div class="row align-items-center">
-            <!-- Текст: на мобильных идет первым (order-1), на десктопе слева -->
-            <div class="col-12 col-md-6 order-1 mb-4">
-                <h1>Tsunami SNM100 Custom Build</h1>
-                <p>Lightweight, stiff, and fast aluminum frame for a street fixed gear.</p>
-                <!-- Бейдж, который скрыт на телефоне и показывается на экранах от md -->
-                <span class="badge bg-primary d-none d-md-inline">Aluminum 6061</span>
+    <main>
+        <!-- ===== HERO ===== -->
+        <section id="hero" class="hero">
+            <div class="container">
+                <div class="row align-items-center g-5">
+                    <!-- Текст: на мобильных идет первым, на десктопе слева -->
+                    <div class="col-12 col-lg-6">
+                        <p class="section-eyebrow">Custom fixed gear builds · Astana</p>
+                        <h1 class="hero-title">No freewheel.<br>One gear.<br><span class="text-accent">Just you and the road.</span></h1>
+                        <p class="hero-lead">We build fixed gear bikes on the Tsunami SNM100 frame. Pick your parts, find your gear ratio and order a build — we assemble it in our workshop in 3–5 days.</p>
+                        <div class="hero-actions">
+                            <a href="#calculator" class="btn btn-warning btn-lg">Find my gear</a>
+                            <a href="#parts" class="btn btn-outline-light btn-lg">Build from parts</a>
+                        </div>
+                        <ul class="hero-stats">
+                            <li><strong>3</strong> base builds</li>
+                            <li><strong>13</strong> parts in stock</li>
+                            <li><strong>48×17</strong> most popular gear</li>
+                        </ul>
+                    </div>
+                    <!-- Картинка: на мобильных идет второй, на десктопе справа -->
+                    <div class="col-12 col-lg-6">
+                        <figure class="hero-photo">
+                            <img src="https://i.pinimg.com/736x/21/07/82/21078229867eee67171a2c423f7f67df.jpg" class="img-fluid" alt="Custom fixed gear bike built on the Tsunami SNM100 frame" width="736" height="920">
+                            <figcaption><span class="badge-accent">Aluminium 6061</span> Tsunami SNM100</figcaption>
+                        </figure>
+                    </div>
+                </div>
             </div>
-            <!-- Картинка: на мобильных идет второй (order-2), на десктопе справа -->
-            <div class="col-12 col-md-6 order-2">
-                <img src="https://i.pinimg.com/736x/21/07/82/21078229867eee67171a2c423f7f67df.jpg" class="img-fluid rounded" alt="Fixed Gear Bike">
-            </div>
-        </div>
-    </section>
 
-    <!-- Секция Комплектующих (Task 1: Ручные медиа-запросы, без Bootstrap) -->
-    <section id="components" class="custom-section">
-        <h2 class="custom-heading">Build Specifications</h2>
-        <div class="custom-grid">
-            <div class="custom-card">
-                <h3>Crankset</h3>
-                <p>SKEACE 48T. Stiff track crankset.</p>
+            <!-- Дорога с велосипедом. JS: js/bike.js -->
+            <div class="road" id="road">
+                <div class="road-line" aria-hidden="true"></div>
+                <div class="bike" id="bike" aria-hidden="true">
+                    <svg viewBox="0 0 220 130" width="220" height="130">
+                        <!-- Заднее колесо со спицами (крутится, при скиде блокируется) -->
+                        <g id="wheel-rear">
+                            <circle class="tire" cx="45" cy="92" r="35"/>
+                            <circle class="rim" cx="45" cy="92" r="29"/>
+                            <g class="spokes">
+                                <line x1="45" y1="66" x2="45" y2="118"/>
+                                <line x1="19" y1="92" x2="71" y2="92"/>
+                                <line x1="27" y1="74" x2="63" y2="110"/>
+                                <line x1="27" y1="110" x2="63" y2="74"/>
+                            </g>
+                            <circle class="hub" cx="45" cy="92" r="4"/>
+                        </g>
+                        <!-- Переднее колесо: карбоновый трёхспицевик -->
+                        <g id="wheel-front">
+                            <circle class="tire" cx="175" cy="92" r="35"/>
+                            <circle class="rim" cx="175" cy="92" r="29"/>
+                            <path class="trispoke" d="M175 92 L171 64 L179 64 Z M175 92 L196 108 L192 114 Z M175 92 L154 108 L158 114 Z"/>
+                            <circle class="hub" cx="175" cy="92" r="5"/>
+                        </g>
+                        <!-- Рама -->
+                        <g class="frame">
+                            <polyline points="45,92 98,95 84,40 45,92"/>
+                            <polyline points="84,40 152,44 98,95"/>
+                            <line x1="152" y1="44" x2="157" y2="60"/>
+                            <line x1="157" y1="60" x2="175" y2="92"/>
+                        </g>
+                        <!-- Цепь, звезда, шатун -->
+                        <g class="drivetrain">
+                            <circle cx="98" cy="95" r="11"/>
+                            <line x1="45" y1="87" x2="98" y2="84"/>
+                            <line x1="45" y1="97" x2="98" y2="106"/>
+                            <line class="crank" x1="98" y1="95" x2="104" y2="114"/>
+                        </g>
+                        <!-- Седло, руль -->
+                        <g class="cockpit">
+                            <line x1="84" y1="40" x2="82" y2="31"/>
+                            <path d="M70 30 L94 30"/>
+                            <line x1="152" y1="44" x2="150" y2="35"/>
+                            <path d="M150 35 L163 34 Q172 34 172 44 Q172 52 164 52"/>
+                        </g>
+                    </svg>
+                </div>
             </div>
-            <div class="custom-card">
-                <h3>Wheelset</h3>
-                <p>Intro7 wheelset. Excellent roll and durability.</p>
+            <div class="container road-controls">
+                <button type="button" class="btn btn-outline-warning btn-sm" id="btn-skid">Skid stop!</button>
+                <p class="road-hint" id="road-hint">A fixie has no freewheel: to stop, the rider locks the rear wheel and skids. Click the road, the button, or press <kbd>S</kbd>.</p>
+                <p class="road-counter" id="skid-counter" aria-live="polite">Skids: 0</p>
             </div>
-            <div class="custom-card">
-                <h3>Tires</h3>
-                <p>Slicks with Presta valves.</p>
-            </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- Секция Галереи (Task 2: Карточки, 1->2->3 колонки) -->
-    <section id="gallery" class="container mt-5 mb-5">
-        <h2 class="mb-4 text-center">Builds Gallery</h2>
-        <div class="row">
-            <!-- Карточка 1 -->
-            <div class="col-12 col-md-6 col-xl-4 mb-4">
-                <div class="card h-100">
-                    <img src="https://i.pinimg.com/736x/69/2d/1c/692d1c37c32491361fb010023458289f.jpg" class="card-img-top" alt="Bike 1">
-                    <div class="card-body">
-                        <h5 class="card-title">Street Build</h5>
-                        <p class="card-text">Classic urban rocket based on Tsunami with pedal straps.</p>
+        <!-- ===== Секция комплектующих (Midterm Task 1: ручные медиа-запросы, без Bootstrap) ===== -->
+        <section id="components" class="custom-section">
+            <h2 class="custom-heading">Build Specifications</h2>
+            <div class="custom-grid">
+                <div class="custom-card">
+                    <span class="spec-number">48T</span>
+                    <h3>Crankset</h3>
+                    <p>SKEACE 48T. Stiff hollow track crankset that does not flex in a sprint.</p>
+                </div>
+                <div class="custom-card">
+                    <span class="spec-number">30 mm</span>
+                    <h3>Wheelset</h3>
+                    <p>Intro7 deep rims. Excellent roll, durability and a flip-flop rear hub.</p>
+                </div>
+                <div class="custom-card">
+                    <span class="spec-number">25c</span>
+                    <h3>Tires</h3>
+                    <p>Slicks with Presta valves. Good grip on asphalt and for long skids.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== JS-фича 1: калькулятор передачи. JS: js/calculator.js ===== -->
+        <section id="calculator" class="section">
+            <div class="container">
+                <p class="section-eyebrow">Gear calculator</p>
+                <h2 class="section-title">Find your gear ratio</h2>
+                <p class="section-lead">On a fixie you have only one gear, so choose it well. Pick the chainring, the rear cog and your cadence — we calculate how hard it pedals, how fast you go and how many skid patches your tire gets.</p>
+
+                <div class="row g-4">
+                    <div class="col-12 col-lg-5">
+                        <form class="panel calc-form" id="calc-form" novalidate>
+                            <div class="row g-3">
+                                <div class="col-6">
+                                    <label for="chainring" class="form-label">Chainring (front)</label>
+                                    <select class="form-select fg-input" id="chainring"></select>
+                                </div>
+                                <div class="col-6">
+                                    <label for="cog" class="form-label">Cog (rear)</label>
+                                    <select class="form-select fg-input" id="cog"></select>
+                                </div>
+                                <div class="col-12">
+                                    <label for="tire" class="form-label">Tire size</label>
+                                    <select class="form-select fg-input" id="tire">
+                                        <option value="2096">700×23c</option>
+                                        <option value="2105" selected>700×25c</option>
+                                        <option value="2136">700×28c</option>
+                                        <option value="2155">700×32c</option>
+                                    </select>
+                                </div>
+                                <div class="col-12">
+                                    <label for="cadence" class="form-label">Cadence (pedal turns per minute)</label>
+                                    <input type="number" class="form-control fg-input" id="cadence" value="90" min="40" max="160" step="1" inputmode="numeric" aria-describedby="cadence-error">
+                                    <p class="field-error" id="cadence-error"></p>
+                                </div>
+                            </div>
+                            <button type="button" class="btn btn-warning w-100 mt-2" id="btn-use-gear">Use 48×17 in my order</button>
+                            <p class="calc-saved" id="calc-saved" role="status" aria-live="polite"></p>
+                        </form>
+                    </div>
+
+                    <div class="col-12 col-lg-7">
+                        <div class="panel calc-result" id="calc-result" aria-live="polite">
+                            <div class="calc-top">
+                                <div>
+                                    <p class="calc-label">Gear ratio</p>
+                                    <p class="calc-ratio" id="out-ratio">2.82</p>
+                                    <p class="calc-feel" id="out-feel"></p>
+                                </div>
+                                <!-- Покрышка: точки = места, где она стирается при скиде (рисует JS) -->
+                                <svg class="patch-tire" id="patch-tire" viewBox="0 0 120 120" role="img" aria-label="Skid patches on the tire"></svg>
+                            </div>
+                            <div class="feel-scale" aria-hidden="true">
+                                <div class="feel-track"><span class="feel-marker" id="feel-marker"></span></div>
+                                <div class="feel-labels"><span>Light</span><span>Street</span><span>Fast</span><span>Track</span></div>
+                            </div>
+                            <dl class="calc-grid">
+                                <div><dt>Gear inches</dt><dd id="out-inches">—</dd></div>
+                                <div><dt>One pedal turn</dt><dd id="out-dev">—</dd></div>
+                                <div><dt>Speed</dt><dd id="out-speed">—</dd></div>
+                                <div><dt>Skid patches</dt><dd id="out-patches">—</dd></div>
+                            </dl>
+                            <p class="calc-note" id="out-note"></p>
+                        </div>
                     </div>
                 </div>
             </div>
-            <!-- Карточка 2 -->
-            <div class="col-12 col-md-6 col-xl-4 mb-4">
-                <div class="card h-100">
-                    <img src="https://i.pinimg.com/736x/07/f6/34/07f6343c4dcfd63baa7a4c0f821772f5.jpg" class="card-img-top" alt="Bike 2">
-                    <div class="card-body">
-                        <h5 class="card-title">Track Build</h5>
-                        <p class="card-text">Aggressive position, drop bar, and minimum weight.</p>
+        </section>
+
+        <!-- ===== JS-фича 2: каталог запчастей + моя сборка. JS: js/catalog.js ===== -->
+        <section id="parts" class="section section-alt">
+            <div class="container">
+                <p class="section-eyebrow">Parts catalog</p>
+                <h2 class="section-title">Build your fixie from parts</h2>
+                <p class="section-lead">Search, filter and sort our parts. Add them to your build — we count the price and the weight, and you can send the build with your order.</p>
+
+                <div class="row g-4">
+                    <div class="col-12 col-xl-8">
+                        <div class="catalog-toolbar">
+                            <div class="toolbar-search">
+                                <label for="part-search" class="form-label">Search</label>
+                                <input type="search" class="form-control fg-input" id="part-search" placeholder="e.g. wheel, chain, 48T" autocomplete="off">
+                            </div>
+                            <div class="toolbar-sort">
+                                <label for="part-sort" class="form-label">Sort by</label>
+                                <select class="form-select fg-input" id="part-sort">
+                                    <option value="default">Recommended</option>
+                                    <option value="price-asc">Price: low to high</option>
+                                    <option value="price-desc">Price: high to low</option>
+                                    <option value="weight-asc">Lightest first</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="category-chips" id="category-chips" role="group" aria-label="Filter by category"></div>
+                        <p class="catalog-count" id="catalog-count" aria-live="polite"></p>
+                        <div class="catalog-grid" id="catalog"></div>
+                    </div>
+
+                    <div class="col-12 col-xl-4">
+                        <aside class="panel build-panel" aria-labelledby="build-title">
+                            <h3 class="build-title" id="build-title">My build</h3>
+                            <p class="build-message" id="build-message" role="status" aria-live="polite"></p>
+                            <ul class="build-list" id="build-list"></ul>
+                            <dl class="build-totals">
+                                <div><dt>Parts</dt><dd id="total-count">0</dd></div>
+                                <div><dt>Weight</dt><dd id="total-weight">0 kg</dd></div>
+                                <div class="build-total-price"><dt>Total</dt><dd id="total-price">0 ₸</dd></div>
+                            </dl>
+                            <div class="build-actions">
+                                <a href="build.html" class="btn btn-warning" id="btn-order-build">Order this build</a>
+                                <button type="button" class="btn btn-outline-light" id="btn-clear-build">Clear</button>
+                            </div>
+                        </aside>
                     </div>
                 </div>
             </div>
-            <!-- Карточка 3 (Заменил сломанную картинку) -->
-            <div class="col-12 col-md-6 col-xl-4 mb-4">
-                <div class="card h-100">
-                    <img src="https://ae-pic-a1.aliexpress-media.com/kf/S1c13862687b34b349d2d2e6f9d85c9f7g.jpg?has_lang=1&ver=2" class="card-img-top" alt="Bike 3">
-                    <div class="card-body">
-                        <h5 class="card-title">Daily Commuter</h5>
-                        <p class="card-text">Build with a flat bar for maneuvering in traffic.</p>
+        </section>
+
+        <!-- ===== Галерея (jQuery лайтбокс). Карточки 1 -> 2 -> 3 колонки ===== -->
+        <section id="gallery" class="section">
+            <div class="container">
+                <p class="section-eyebrow">Gallery</p>
+                <h2 class="section-title">Builds we made</h2>
+                <p class="section-lead">Click a photo to open it bigger. Use the arrows or the keyboard to look through the builds.</p>
+                <div class="row">
+                    <div class="col-12 col-md-6 col-xl-4 mb-4">
+                        <article class="card build-card h-100">
+                            <button type="button" class="gallery-open" data-index="0" aria-label="Open the photo of Street Build">
+                                <img src="https://i.pinimg.com/736x/69/2d/1c/692d1c37c32491361fb010023458289f.jpg" class="card-img-top" alt="Street Build: Tsunami fixie with pedal straps" loading="lazy" width="736" height="736">
+                            </button>
+                            <div class="card-body">
+                                <h3 class="card-title">Street Build</h3>
+                                <p class="card-text">Classic urban rocket based on Tsunami with pedal straps.</p>
+                            </div>
+                        </article>
+                    </div>
+                    <div class="col-12 col-md-6 col-xl-4 mb-4">
+                        <article class="card build-card h-100">
+                            <button type="button" class="gallery-open" data-index="1" aria-label="Open the photo of Track Build">
+                                <img src="https://i.pinimg.com/736x/07/f6/34/07f6343c4dcfd63baa7a4c0f821772f5.jpg" class="card-img-top" alt="Track Build: fixie with a drop bar" loading="lazy" width="736" height="736">
+                            </button>
+                            <div class="card-body">
+                                <h3 class="card-title">Track Build</h3>
+                                <p class="card-text">Aggressive position, drop bar, and minimum weight.</p>
+                            </div>
+                        </article>
+                    </div>
+                    <div class="col-12 col-md-6 col-xl-4 mb-4">
+                        <article class="card build-card h-100">
+                            <button type="button" class="gallery-open" data-index="2" aria-label="Open the photo of Daily Commuter">
+                                <img src="https://ae-pic-a1.aliexpress-media.com/kf/S1c13862687b34b349d2d2e6f9d85c9f7g.jpg?has_lang=1&amp;ver=2" class="card-img-top" alt="Daily Commuter: fixie with a flat bar" loading="lazy" width="736" height="736">
+                            </button>
+                            <div class="card-body">
+                                <h3 class="card-title">Daily Commuter</h3>
+                                <p class="card-text">Build with a flat bar for maneuvering in traffic.</p>
+                            </div>
+                        </article>
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
-<footer class="text-center py-4 mt-5 border-top border-secondary text-secondary">
+        </section>
+
+        <!-- ===== FAQ (jQuery аккордеон) ===== -->
+        <section id="faq" class="section section-alt">
+            <div class="container">
+                <p class="section-eyebrow">FAQ</p>
+                <h2 class="section-title">New to fixed gear?</h2>
+                <div class="faq" id="faq-list">
+                    <div class="faq-item">
+                        <h3 class="faq-heading">
+                            <button type="button" class="faq-question" aria-expanded="false" aria-controls="faq-1">What is a fixed gear bike?</button>
+                        </h3>
+                        <div class="faq-answer" id="faq-1">
+                            <p>The rear cog is screwed to the hub without a freewheel. When the wheel turns, the pedals turn too — you cannot coast. It feels very direct: you control the speed with your legs.</p>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <h3 class="faq-heading">
+                            <button type="button" class="faq-question" aria-expanded="false" aria-controls="faq-2">How do you stop without brakes?</button>
+                        </h3>
+                        <div class="faq-answer" id="faq-2">
+                            <p>You resist the pedals to slow down, or you do a skid: move your weight forward, lock your legs and the rear wheel slides. We still recommend a front brake for city traffic — every build can get one for free.</p>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <h3 class="faq-heading">
+                            <button type="button" class="faq-question" aria-expanded="false" aria-controls="faq-3">Which gear ratio should I choose?</button>
+                        </h3>
+                        <div class="faq-answer" id="faq-3">
+                            <p>For the city, most riders use 2.6–3.0 (for example 48×17). Lighter gears are better for tricks and hills, heavier ones for speed. Try different gears in our <a href="#calculator">gear calculator</a>.</p>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <h3 class="faq-heading">
+                            <button type="button" class="faq-question" aria-expanded="false" aria-controls="faq-4">What is the difference from a single speed?</button>
+                        </h3>
+                        <div class="faq-answer" id="faq-4">
+                            <p>A single speed has one gear too, but with a freewheel, so you can stop pedaling. Our Intro7 wheels have a flip-flop hub: a fixed cog on one side and a freewheel on the other.</p>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <h3 class="faq-heading">
+                            <button type="button" class="faq-question" aria-expanded="false" aria-controls="faq-5">How long does a build take?</button>
+                        </h3>
+                        <div class="faq-answer" id="faq-5">
+                            <p>3–5 working days after you choose the parts. You can follow the work on our <a href="workshop.html">workshop board</a> and book a test ride in the <a href="build.html">order form</a>.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Лайтбокс галереи (jQuery показывает его через fadeIn) -->
+    <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Photo viewer">
+        <button type="button" class="lightbox-close" id="lightbox-close" aria-label="Close">&times;</button>
+        <button type="button" class="lightbox-nav lightbox-prev" id="lightbox-prev" aria-label="Previous photo">&#8249;</button>
+        <figure class="lightbox-figure">
+            <img src="images/wheel.svg" alt="" id="lightbox-img">
+            <figcaption id="lightbox-caption"></figcaption>
+        </figure>
+        <button type="button" class="lightbox-nav lightbox-next" id="lightbox-next" aria-label="Next photo">&#8250;</button>
+    </div>
+
+    <!-- Колесо "Наверх": крутится при скролле -->
+    <button type="button" class="back-to-top" id="back-to-top" aria-label="Back to top">
+        <img src="images/wheel.svg" alt="" width="56" height="56">
+    </button>
+
+    <!-- Футер (одинаковый на всех страницах) -->
+    <footer class="site-footer">
         <div class="container">
-            <p class="mb-0">&copy; 2026 Fixed Gear Astana | Zharkyn Abay</p>
+            <div class="row g-4">
+                <div class="col-12 col-md-4">
+                    <p class="footer-title display-font">Fixed Gear Astana</p>
+                    <p class="mb-0">Custom fixed gear builds on the Tsunami SNM100 frame. Made in Astana.</p>
+                </div>
+                <div class="col-6 col-md-3">
+                    <p class="footer-title">Pages</p>
+                    <ul class="footer-links">
+                        <li><a href="index.html#calculator">Gear calculator</a></li>
+                        <li><a href="index.html#parts">Parts catalog</a></li>
+                        <li><a href="build.html">Order a build</a></li>
+                        <li><a href="workshop.html">Workshop board</a></li>
+                    </ul>
+                </div>
+                <div class="col-6 col-md-5">
+                    <p class="footer-title">Credits</p>
+                    <ul class="footer-links">
+                        <li>Photos: Pinterest and AliExpress product photos</li>
+                        <li>Bootstrap 5.3, jQuery 3.7, font Archivo (Google Fonts)</li>
+                        <li>Code written with help of Claude (Anthropic AI)</li>
+                    </ul>
+                </div>
+            </div>
+            <p class="footer-copy mb-0">&copy; 2026 Fixed Gear Astana | Zharkyn Abay</p>
         </div>
     </footer>
-    <!-- Подключение Bootstrap JS (необходимо для работы бургер-меню) -->
+
+    <!-- Bootstrap JS (необходимо для работы бургер-меню) -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

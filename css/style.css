@@ -1,0 +1,351 @@
+/* =========================================================
+   Fixed Gear Astana — общие стили для ВСЕХ страниц
+   Цвета, шрифты, навигация, футер, кнопки, колесо "наверх".
+   Стили отдельных страниц: home.css, order.css, tasks.css
+   ========================================================= */
+
+/* ---------- Цвета сайта (одни и те же переменные на всех страницах) ---------- */
+:root {
+  --fg-bg: #212529;          /* тёмный фон */
+  --fg-bg-deep: #16191c;     /* ещё темнее: hero и дорога */
+  --fg-card: #343a40;        /* серые панели и карточки */
+  --fg-card-2: #2b3035;
+  --fg-border: #495057;
+  --fg-text: #f8f9fa;
+  --fg-muted: #adb5bd;
+  --fg-accent: #ffc107;      /* жёлтый акцент сайта */
+  --fg-accent-dark: #e0a800;
+  --fg-ok: #3dd68c;
+  --fg-ok-bg: rgba(61, 214, 140, 0.12);
+  --fg-bad: #ff6b6b;
+  --fg-bad-bg: rgba(255, 107, 107, 0.12);
+  --fg-warn-bg: rgba(255, 193, 7, 0.12);
+  --fg-radius: 12px;
+  --fg-font-display: "Archivo", system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+
+/* ---------- База ---------- */
+/* Bootstrap включает плавный скролл через CSS; у меня он на jQuery (js/effects.js) */
+:root {
+  scroll-behavior: auto;
+}
+/* Липкая навигация не закрывает заголовок секции при переходе по якорю */
+section[id] {
+  scroll-margin-top: 72px;
+}
+body {
+  background-color: var(--fg-bg);
+  color: var(--fg-text);
+}
+
+h1, h2, h3, .navbar-brand, .display-font {
+  font-family: var(--fg-font-display);
+  font-weight: 800;
+  letter-spacing: -0.01em;
+}
+
+a {
+  color: var(--fg-accent);
+}
+a:hover {
+  color: var(--fg-accent-dark);
+}
+
+/* Видимый фокус для работы с клавиатуры: на всех ссылках, кнопках и полях */
+a:focus-visible,
+button:focus-visible,
+.btn:focus-visible,
+summary:focus-visible {
+  outline: 3px solid var(--fg-accent);
+  outline-offset: 3px;
+  box-shadow: none;
+}
+
+/* ---------- Навигация ---------- */
+.site-nav {
+  background-color: var(--fg-bg-deep);
+  border-bottom: 1px solid var(--fg-border);
+}
+.site-nav .navbar-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  text-transform: uppercase;
+  font-size: 1.05rem;
+}
+.brand-wheel {
+  width: 28px;
+  height: 28px;
+  transition: transform 0.6s ease;
+}
+.site-nav .navbar-brand:hover .brand-wheel {
+  transform: rotate(180deg);
+}
+.site-nav .nav-link {
+  color: var(--fg-muted);
+  position: relative;
+  transition: color 0.2s ease;
+}
+.site-nav .nav-link:hover,
+.site-nav .nav-link:focus-visible {
+  color: var(--fg-text);
+}
+/* Текущая страница: жёлтый текст и полоска снизу */
+.site-nav .nav-link.active {
+  color: var(--fg-accent);
+}
+@media (min-width: 992px) {
+  .site-nav .nav-link.active::after {
+    content: "";
+    position: absolute;
+    left: 0.5rem;
+    right: 0.5rem;
+    bottom: -0.1rem;
+    height: 3px;
+    border-radius: 3px;
+    background-color: var(--fg-accent);
+  }
+}
+
+/* ---------- Кнопки: hover-эффекты ---------- */
+.btn {
+  transition: transform 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease,
+              color 0.15s ease, border-color 0.15s ease;
+}
+.btn-warning {
+  color: #16191c;
+  font-weight: 700;
+}
+.btn-warning:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(255, 193, 7, 0.35);
+}
+.btn-outline-light:hover,
+.btn-outline-warning:hover {
+  transform: translateY(-2px);
+}
+.btn:active {
+  transform: translateY(0);
+}
+
+/* ---------- Заголовок секции ---------- */
+.section {
+  padding: 4rem 0;
+}
+.section-eyebrow,
+.page-eyebrow {
+  color: var(--fg-accent);
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-bottom: 0.4rem;
+}
+.section-title {
+  font-size: clamp(1.8rem, 4vw, 2.6rem);
+  margin-bottom: 0.75rem;
+}
+.section-lead {
+  color: var(--fg-muted);
+  max-width: 44rem;
+  margin-bottom: 2rem;
+}
+
+
+/* ---------- Панели и ошибки полей (общие: главная, заказ, задания) ---------- */
+.panel {
+  background-color: var(--fg-card);
+  border: 1px solid var(--fg-border);
+  border-radius: var(--fg-radius);
+  padding: 1.5rem;
+}
+/* Место под ошибку зарезервировано (одна строка), чтобы форма не "прыгала",
+   когда ошибка появляется */
+.field-error {
+  color: var(--fg-bad);
+  font-size: 0.9rem;
+  margin: 0.35rem 0 0;
+  min-height: 1.35rem;
+}
+
+/* ---------- Поля ввода в тёмной теме (главная и заказ) ---------- */
+.fg-input,
+.fg-input:focus {
+  background-color: var(--fg-bg);
+  color: var(--fg-text);
+  border-color: var(--fg-border);
+}
+.fg-input::placeholder {
+  color: #8a939b;
+}
+.fg-input:focus {
+  border-color: var(--fg-accent);
+  box-shadow: 0 0 0 0.2rem rgba(255, 193, 7, 0.3);
+}
+.fg-input.is-invalid,
+.fg-input.is-invalid:focus {
+  border-color: var(--fg-bad);
+  box-shadow: 0 0 0 0.2rem var(--fg-bad-bg);
+  background-image: none;
+}
+
+/* =========================================
+   Midterm Task 1: адаптивность вручную (Mobile-First)
+   Секция "Build Specifications" на главной
+   ========================================= */
+
+/* Базовые стили (для телефонов - 375px) */
+.custom-section {
+    padding: 48px 20px;
+    background-color: var(--fg-bg-deep);
+    color: #fff;
+    border-top: 1px solid var(--fg-border);
+    border-bottom: 1px solid var(--fg-border);
+}
+
+/* Изменение 1: Базовый размер заголовка */
+.custom-heading {
+    text-align: center;
+    font-size: 1.8rem;
+    margin-bottom: 30px;
+}
+
+/* Сетка: 1 колонка на мобильных */
+.custom-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 20px;
+    max-width: 1140px;
+    margin: 0 auto;
+}
+
+.custom-card {
+    background-color: var(--fg-card);
+    padding: 24px 20px;
+    border-radius: var(--fg-radius);
+    border: 1px solid var(--fg-border);
+    text-align: center;
+    transition: transform 0.2s ease, border-color 0.2s ease;
+}
+.custom-card:hover {
+    transform: translateY(-4px);
+    border-color: var(--fg-accent);
+}
+.custom-card h3 {
+    font-size: 1.3rem;
+}
+.custom-card p {
+    color: var(--fg-muted);
+    margin-bottom: 0;
+}
+.spec-number {
+    display: block;
+    color: var(--fg-accent);
+    font-family: var(--fg-font-display);
+    font-size: 2.2rem;
+    font-weight: 800;
+    line-height: 1;
+    margin-bottom: 0.5rem;
+}
+
+/* -----------------------------------------
+   Брейкпоинт 1: Планшеты (от 768px)
+   ----------------------------------------- */
+@media (min-width: 768px) {
+    /* Сетка меняется на 2 колонки */
+    .custom-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    /* Изменение 2: Увеличиваем заголовок */
+    .custom-heading {
+        font-size: 2.2rem;
+    }
+}
+
+/* -----------------------------------------
+   Брейкпоинт 2: Ноутбуки/Десктопы (от 1280px)
+   ----------------------------------------- */
+@media (min-width: 1280px) {
+    /* Сетка меняется на 3 колонки */
+    .custom-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    /* Изменение 3: Добавляем внутренние отступы секции */
+    .custom-section {
+        padding: 80px 10%;
+    }
+}
+
+/* ---------- Футер с Credits ---------- */
+.site-footer {
+  background-color: var(--fg-bg-deep);
+  border-top: 1px solid var(--fg-border);
+  color: var(--fg-muted);
+  padding: 2.5rem 0 1.5rem;
+  margin-top: 4rem;
+  font-size: 0.92rem;
+}
+.footer-title {
+  color: var(--fg-text);
+  font-size: 1rem;
+  margin-bottom: 0.75rem;
+}
+.footer-links {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.footer-links li + li {
+  margin-top: 0.3rem;
+}
+.footer-links a {
+  color: var(--fg-muted);
+  text-decoration: none;
+}
+.footer-links a:hover {
+  color: var(--fg-accent);
+}
+.footer-copy {
+  border-top: 1px solid var(--fg-border);
+  margin-top: 1.5rem;
+  padding-top: 1rem;
+  text-align: center;
+}
+
+/* ---------- Колесо "Наверх": крутится при скролле (js/effects.js) ---------- */
+.back-to-top {
+  position: fixed;
+  right: 16px;
+  bottom: 16px;
+  z-index: 1030;
+  width: 56px;
+  height: 56px;
+  padding: 0;
+  border: 2px solid var(--fg-accent);
+  border-radius: 50%;
+  background-color: var(--fg-bg-deep);
+  display: none;              /* jQuery показывает его через fadeIn() */
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.45);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+.back-to-top:hover {
+  box-shadow: 0 6px 22px rgba(255, 193, 7, 0.4);
+}
+.back-to-top svg {
+  width: 100%;
+  height: 100%;
+}
+
+/* Если человек выключил анимации в системе — убираем их */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+  html {
+    scroll-behavior: auto;
+  }
+}

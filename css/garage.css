@@ -1,0 +1,235 @@
+/* =========================================================
+   Garage (garage.html): студия с великом, варианты деталей, spoke card
+   ========================================================= */
+
+.page-head h1 {
+  font-size: clamp(2rem, 5vw, 3rem);
+  text-transform: uppercase;
+}
+.page-lead {
+  color: var(--fg-muted);
+  max-width: 44rem;
+  font-size: 1.05rem;
+}
+.page-head {
+  margin-bottom: 2rem;
+}
+
+/* ---------- Студия: светло-серый фон, чтобы были видны и чёрные, и белые детали ---------- */
+.studio {
+  position: relative;
+  overflow: hidden;
+  border-radius: 10px;
+  padding: 2rem 1rem 1.25rem;
+  background: radial-gradient(circle at 45% 35%, #f1f3f5, #adb5bd);
+}
+/* пол студии */
+.studio::after {
+  content: "";
+  position: absolute;
+  left: 8%;
+  right: 22%;
+  bottom: 1.1rem;
+  height: 10px;
+  border-radius: 50%;
+  background-color: rgba(0, 0, 0, 0.18);
+}
+.studio .bike-art {
+  position: relative;
+  z-index: 1;
+  width: 82%;
+  max-width: 560px;
+  /* детали, которые не выбираются, — тёмные на светлом фоне студии */
+  --bike-spoke: #495057;
+  --bike-metal: #495057;
+  --bike-trispoke: #343a40;
+  --bike-crank: #343a40;
+  --bike-bar: #212529;
+}
+/* "Spin wheels": колёса крутятся вокруг своего центра */
+.studio.is-spinning #wheel-rear,
+.studio.is-spinning #wheel-front {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: wheel-spin 1.2s linear infinite;
+}
+@keyframes wheel-spin {
+  to { transform: rotate(360deg); }
+}
+
+.studio-bar {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.75rem;
+  margin: 1rem 0;
+}
+.studio-caption {
+  margin: 0;
+  font-weight: 600;
+}
+
+/* ---------- Цена ---------- */
+.price-box {
+  border-top: 1px solid var(--fg-border);
+  padding-top: 1rem;
+}
+.price-title {
+  font-size: 1.1rem;
+}
+.price-lines {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.price-lines li {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.35rem 0;
+  border-bottom: 1px dashed var(--fg-border);
+  color: var(--fg-muted);
+  font-size: 0.95rem;
+}
+.price-lines li span:last-child {
+  white-space: nowrap;
+}
+.price-total {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin: 0.75rem 0 1rem;
+  color: var(--fg-muted);
+}
+.price-total strong {
+  font-family: var(--fg-font-display);
+  font-size: 1.8rem;
+  color: var(--fg-accent);
+}
+
+.garage-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+.garage-status {
+  min-height: 1.4rem;
+  margin: 0.75rem 0 0;
+  font-size: 0.9rem;
+}
+.garage-status.status-ok   { color: var(--fg-ok); }
+.garage-status.status-warn { color: var(--fg-accent); }
+.garage-status.status-bad  { color: var(--fg-bad); }
+
+/* ---------- Варианты деталей (радиокнопки-плашки) ---------- */
+.builder-title {
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
+}
+.option-group {
+  margin-bottom: 1.1rem;
+}
+.option-group legend {
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--fg-muted);
+  margin-bottom: 0.5rem;
+}
+.option-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+.option {
+  position: relative;
+  cursor: pointer;
+}
+/* сама радиокнопка невидима, но остаётся в Tab и работает со стрелками */
+.option-input {
+  position: absolute;
+  opacity: 0;
+  width: 1px;
+  height: 1px;
+}
+.option-body {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.4rem 0.75rem;
+  border: 1px solid var(--fg-border);
+  border-radius: 999px;
+  background-color: var(--fg-card-2);
+  font-size: 0.9rem;
+  transition: border-color 0.15s ease, background-color 0.15s ease;
+}
+.option:hover .option-body {
+  border-color: var(--fg-muted);
+}
+.option-input:checked + .option-body {
+  border-color: var(--fg-accent);
+  background-color: var(--fg-warn-bg);
+  font-weight: 700;
+}
+.option-input:focus-visible + .option-body {
+  outline: 3px solid var(--fg-accent);
+  outline-offset: 2px;
+}
+.option-swatch {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 1px solid rgba(0, 0, 0, 0.3);
+  flex-shrink: 0;
+}
+.option-price {
+  color: var(--fg-muted);
+  font-size: 0.8rem;
+  font-weight: 400;
+}
+
+/* ---------- Spoke card ---------- */
+.spoke-section {
+  margin-top: 4rem;
+}
+.field {
+  margin-bottom: 0.75rem;
+}
+.req {
+  color: var(--fg-accent);
+}
+.field-hint {
+  color: var(--fg-muted);
+  font-size: 0.85rem;
+  margin: 0.35rem 0 0;
+}
+.card-preview-panel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.25rem;
+}
+.card-preview {
+  width: 100%;
+  max-width: 420px;
+  height: auto;
+  filter: drop-shadow(0 10px 18px rgba(0, 0, 0, 0.3));
+}
+.card-preview .card-bg {
+  fill: #ffc107;
+  transition: fill 0.2s ease;
+}
+.card-preview .card-hole {
+  fill: #16191c;
+}
+.card-preview text {
+  fill: #16191c;
+  font-family: var(--fg-font-display);
+  font-weight: 800;
+  text-anchor: middle;
+}
+.card-preview .card-number { font-size: 84px; }
+.card-preview .card-nick   { font-size: 24px; }
+.card-preview .card-small  { font-size: 11px; font-weight: 600; letter-spacing: 0.08em; }

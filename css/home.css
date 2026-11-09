@@ -91,35 +91,12 @@
   margin-right: 0.35rem;
 }
 
-/* ---------- Дорога и велосипед (js/bike.js) ---------- */
-.road {
-  position: relative;
+/* ---------- Дорога и велосипед (js/bike.js) ----------
+   Асфальт, след, дымок и сам рисунок — в css/bike.css (общие с игрой) */
+.hero .road {
   height: 150px;
   margin-top: 2.5rem;
-  overflow: hidden;
   cursor: pointer;
-}
-/* асфальт */
-.road::before {
-  content: "";
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  height: 26px;
-  background-color: #2b3035;
-  border-top: 2px solid #3a4046;
-}
-/* жёлтая разметка */
-.road-line {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 11px;
-  height: 3px;
-  background-image: linear-gradient(90deg, var(--fg-accent) 0 40px, transparent 40px 80px);
-  background-size: 80px 3px;
-  opacity: 0.7;
 }
 .bike {
   position: absolute;
@@ -127,54 +104,6 @@
   bottom: 24px;
   width: 220px;
   will-change: transform;
-}
-.bike svg {
-  display: block;
-  width: 100%;
-  height: auto;
-  overflow: visible;
-}
-.bike .tire      { fill: none; stroke: var(--bike-tire); stroke-width: 5; }
-.bike .rim       { fill: none; stroke: #6c757d; stroke-width: 6; }
-.bike .spokes    { stroke: var(--bike-spoke); stroke-width: 1.5; }
-.bike .hub       { fill: var(--bike-frame); }
-.bike .trispoke  { fill: var(--bike-tire); }
-.bike .frame polyline,
-.bike .frame line { fill: none; stroke: var(--bike-frame); stroke-width: 6; stroke-linejoin: round; stroke-linecap: round; }
-.bike .drivetrain circle,
-.bike .drivetrain line { fill: none; stroke: var(--bike-metal); stroke-width: 2; }
-.bike .drivetrain .crank { stroke: var(--bike-tire); stroke-width: 4; stroke-linecap: round; }
-.bike .cockpit line,
-.bike .cockpit path { fill: none; stroke: var(--bike-tire); stroke-width: 4; stroke-linecap: round; }
-
-/* Во время скида заднее колесо "горит" жёлтым — видно, что оно заблокировано */
-.bike.is-skidding #wheel-rear .tire {
-  stroke: var(--fg-accent);
-}
-
-/* След от шины. Ширину меняет JS, исчезает через jQuery fadeOut() */
-.skid-mark {
-  position: absolute;
-  bottom: 19px;
-  height: 6px;
-  border-radius: 3px;
-  background: linear-gradient(90deg, rgba(0, 0, 0, 0.1), #000 70%);
-  pointer-events: none;
-}
-/* Дымок из-под колеса */
-.puff {
-  position: absolute;
-  bottom: 26px;
-  width: 14px;
-  height: 14px;
-  border-radius: 50%;
-  background-color: rgba(220, 220, 220, 0.55);
-  pointer-events: none;
-  animation: puff 0.7s ease-out forwards;
-}
-@keyframes puff {
-  from { transform: translate(0, 0) scale(0.6); opacity: 0.9; }
-  to   { transform: translate(-22px, -26px) scale(2.2); opacity: 0; }
 }
 
 .road-controls {
@@ -190,6 +119,11 @@
   font-size: 0.9rem;
   margin: 0;
   flex: 1 1 18rem;
+}
+.road-links {
+  flex-basis: 100%;
+  margin: 0;
+  font-size: 0.9rem;
 }
 .road-counter {
   margin: 0;

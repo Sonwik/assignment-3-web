@@ -162,6 +162,13 @@ document.addEventListener('keydown', function (event) {
 });
 
 // ---------- Старт ----------
+// Если в Garage собран свой велик — едет он (цвет рамы, ободов, руль, spoke card)
+const myBike = loadGarage();
+if (myBike !== null) {
+  applyGarageToBike(bike.querySelector('svg'), myBike, false);
+  document.querySelector('#garage-link').textContent = 'Your bike from the Garage is riding — change it';
+}
+
 // Если в системе выключены анимации — велосипед просто стоит в центре
 const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 if (reduceMotion) {

@@ -1,0 +1,131 @@
+/* =========================================================
+   Рисунок велосипеда (SVG) — общий для главной, Garage и Skid Challenge.
+   Каждая деталь красится CSS-переменной. Значения по умолчанию
+   зависят от темы (css/style.css), а Garage подставляет свои цвета
+   прямо в style у <svg> (js/garage-data.js → applyGarageToBike).
+   ========================================================= */
+
+.bike-art {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;           /* луч фары выходит за рисунок */
+}
+
+.bike-art .tire     { fill: none; stroke: var(--bike-tire); stroke-width: 5; }
+.bike-art .wall     { fill: none; stroke: var(--bike-wall, transparent); stroke-width: 1.4; }
+.bike-art .rim      { fill: none; stroke: var(--bike-rim, #6c757d); stroke-width: 6; }
+.bike-art .spokes   { stroke: var(--bike-spoke); stroke-width: 1.5; }
+.bike-art .hub      { fill: var(--bike-frame); }
+.bike-art .trispoke { fill: var(--bike-trispoke, var(--bike-tire)); }
+
+.bike-art .frame polyline,
+.bike-art .frame line {
+  fill: none;
+  stroke: var(--bike-frame);
+  stroke-width: 6;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}
+.bike-art .drivetrain circle,
+.bike-art .drivetrain line { fill: none; stroke: var(--bike-metal); stroke-width: 2; }
+.bike-art .drivetrain .crank { stroke: var(--bike-crank, var(--bike-tire)); stroke-width: 4; stroke-linecap: round; }
+.bike-art .cockpit line,
+.bike-art .cockpit path {
+  fill: none;
+  stroke: var(--bike-bar, var(--bike-tire));
+  stroke-width: 4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* Spoke card — карточка в спицах заднего колеса */
+.bike-art .spoke-card rect {
+  fill: var(--bike-card, #ffc107);
+  stroke: rgba(0, 0, 0, 0.35);
+  stroke-width: 0.6;
+}
+.bike-art .spoke-card text {
+  fill: #16191c;
+  font-family: var(--fg-font-display);
+  font-size: 8px;
+  font-weight: 800;
+  text-anchor: middle;
+}
+
+/* Скид: заблокированное заднее колесо подсвечивается */
+.is-skidding #wheel-rear .tire {
+  stroke: var(--fg-accent);
+}
+
+/* ---------- Фара: горит только в тёмной теме ---------- */
+.bike-art .headlight {
+  display: none;
+}
+:root[data-theme="dark"] .bike-art .headlight {
+  display: inline;
+}
+.bike-art .lamp {
+  fill: #fff3bf;
+}
+.bike-art .beam {
+  fill: url(#beam-glow);
+  animation: beam-flicker 3s ease-in-out infinite;
+}
+@keyframes beam-flicker {
+  0%, 100% { opacity: 1; }
+  50%      { opacity: 0.8; }
+}
+
+/* ---------- Дорога: асфальт, разметка, след шины, дымок ----------
+   (главная и Skid Challenge) */
+.road {
+  position: relative;
+  overflow: hidden;            /* велик уезжает за край — без горизонтального скролла */
+}
+/* асфальт */
+.road::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 26px;
+  background-color: #2b3035;
+  border-top: 2px solid #3a4046;
+}
+/* жёлтая разметка */
+.road-line {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 11px;
+  height: 3px;
+  background-image: linear-gradient(90deg, var(--fg-accent) 0 40px, transparent 40px 80px);
+  background-size: 80px 3px;
+  opacity: 0.7;
+}
+/* След от шины. Ширину меняет JS, исчезает через jQuery fadeOut() */
+.skid-mark {
+  position: absolute;
+  bottom: 19px;
+  height: 6px;
+  border-radius: 3px;
+  background: linear-gradient(90deg, rgba(0, 0, 0, 0.1), #000 70%);
+  pointer-events: none;
+}
+/* Дымок из-под колеса */
+.puff {
+  position: absolute;
+  bottom: 26px;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background-color: rgba(220, 220, 220, 0.55);
+  pointer-events: none;
+  animation: puff 0.7s ease-out forwards;
+}
+@keyframes puff {
+  from { transform: translate(0, 0) scale(0.6); opacity: 0.9; }
+  to   { transform: translate(-22px, -26px) scale(2.2); opacity: 0; }
+}

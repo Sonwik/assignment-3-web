@@ -1,0 +1,167 @@
+/* =========================================================
+   Skid Challenge (skid.html)
+   Асфальт, след и рисунок велика — в css/bike.css
+   ========================================================= */
+
+.page-head {
+  margin-bottom: 2rem;
+}
+.page-head h1 {
+  font-size: clamp(2rem, 5vw, 3rem);
+  text-transform: uppercase;
+}
+.page-lead {
+  color: var(--fg-muted);
+  max-width: 44rem;
+  font-size: 1.05rem;
+}
+
+/* ---------- Счёт ---------- */
+.skid-stats {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.75rem;
+  margin-bottom: 1.25rem;
+}
+@media (min-width: 768px) {
+  .skid-stats { grid-template-columns: repeat(4, 1fr); }
+}
+.skid-stat {
+  background-color: var(--fg-card);
+  border: 1px solid var(--fg-border);
+  border-radius: var(--fg-radius);
+  padding: 0.6rem 1rem;
+}
+.skid-stat dt {
+  color: var(--fg-muted);
+  font-size: 0.8rem;
+  font-weight: 400;
+}
+.skid-stat dd {
+  margin: 0;
+  font-family: var(--fg-font-display);
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: var(--fg-accent);
+}
+
+/* ---------- Трасса ---------- */
+.track {
+  height: 170px;
+  border-radius: var(--fg-radius);
+  border: 1px solid var(--fg-border);
+  background:
+    linear-gradient(180deg, transparent 60%, rgba(0, 0, 0, 0.08)),
+    var(--fg-bg-deep);
+}
+.game-bike {
+  position: absolute;
+  left: 0;
+  bottom: 24px;
+  width: 200px;
+  will-change: transform;
+}
+@media (max-width: 575.98px) {
+  .game-bike { width: 140px; }
+}
+/* Стоп-линия на асфальте */
+.stop-line {
+  position: absolute;
+  bottom: 0;
+  width: 8px;
+  height: 26px;
+  background: repeating-linear-gradient(180deg, #f8f9fa 0 5px, #e03131 5px 10px);
+}
+.stop-line span {
+  position: absolute;
+  bottom: 34px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 0.1rem 0.45rem;
+  border-radius: 4px;
+  background-color: #e03131;
+  color: #fff;
+  font-family: var(--fg-font-display);
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+}
+
+/* ---------- Кнопки ---------- */
+.skid-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  margin: 1.5rem 0 0.75rem;
+}
+.skid-button {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  border: 4px solid var(--fg-accent);
+  background-color: var(--fg-card);
+  color: var(--fg-text);
+  font-family: var(--fg-font-display);
+  font-weight: 800;
+  font-size: 1.05rem;
+  line-height: 1.15;
+  text-transform: uppercase;
+  touch-action: none;            /* на телефоне долгое нажатие не открывает меню */
+  user-select: none;
+  -webkit-user-select: none;
+  transition: transform 0.1s ease, background-color 0.1s ease;
+}
+.skid-button:hover:not(:disabled) {
+  background-color: var(--fg-warn-bg);
+}
+.skid-button.is-pressed {
+  transform: scale(0.93);
+  background-color: var(--fg-accent);
+  color: var(--fg-bg-deep);
+}
+.skid-button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+.skid-message {
+  text-align: center;
+  font-weight: 600;
+  min-height: 1.5rem;
+}
+
+/* ---------- История и правила ---------- */
+.panel-heading {
+  font-size: 1.2rem;
+  margin-bottom: 0.75rem;
+}
+.skid-history {
+  padding-left: 0;
+  list-style: none;
+  margin: 0;
+}
+.skid-history:empty::before {
+  content: "No rounds yet.";
+  color: var(--fg-muted);
+  font-style: italic;
+}
+.skid-history li {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.45rem 0;
+  border-bottom: 1px solid var(--fg-border);
+}
+.skid-history strong {
+  color: var(--fg-accent);
+  white-space: nowrap;
+}
+.skid-rules {
+  color: var(--fg-muted);
+  padding-left: 1.1rem;
+  margin: 0;
+}
+.skid-rules li + li {
+  margin-top: 0.4rem;
+}

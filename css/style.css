@@ -166,6 +166,7 @@ summary:focus-visible {
 
 /* Переключатель темы: солнце в тёмной теме, луна в светлой */
 .theme-toggle {
+  position: relative;          /* от неё свисает брелок */
   display: grid;
   place-items: center;
   width: 40px;
@@ -180,11 +181,65 @@ summary:focus-visible {
 .theme-toggle:hover {
   border-color: var(--fg-accent);
   color: var(--fg-accent);
-  transform: rotate(20deg);
 }
-.theme-toggle svg {
+.theme-toggle .icon-sun,
+.theme-toggle .icon-moon {
   width: 20px;
   height: 20px;
+  transition: transform 0.3s ease;
+}
+.theme-toggle:hover .icon-sun,
+.theme-toggle:hover .icon-moon {
+  transform: rotate(20deg);
+}
+
+/* ---------- Брелок под кнопкой темы (js/keychain.js качает его) ---------- */
+.keychain {
+  position: absolute;
+  top: calc(100% - 4px);
+  left: 50%;
+  width: 40px;
+  margin-left: -20px;
+  transform-origin: 20px 2px;  /* качается вокруг верхнего кольца */
+  pointer-events: none;
+}
+.keychain-art {
+  display: block;
+  width: 40px;
+  height: 80px;
+  overflow: visible;
+  pointer-events: auto;        /* по звезде можно кликнуть — это клик по кнопке темы */
+  cursor: pointer;
+}
+.key-ring,
+.key-link {
+  fill: none;
+  stroke: var(--fg-muted);
+  stroke-width: 1.6;
+}
+.key-cog {
+  fill: var(--bike-frame);
+  stroke: rgba(0, 0, 0, 0.35);
+  stroke-width: 0.6;
+}
+.key-lockring {
+  fill: none;
+  stroke: rgba(0, 0, 0, 0.35);
+  stroke-width: 1.2;
+}
+/* "Дёрнули за брелок": короткий рывок вниз */
+.keychain-art.is-tugged {
+  animation: key-tug 0.4s ease;
+}
+@keyframes key-tug {
+  30% { transform: translateY(9px); }
+  65% { transform: translateY(-2px); }
+}
+/* На телефоне и планшете кнопка темы рядом с бургером — брелок закрывал бы текст */
+@media (max-width: 991.98px) {
+  .keychain {
+    display: none;
+  }
 }
 .icon-moon {
   display: none;

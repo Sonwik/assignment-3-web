@@ -642,3 +642,157 @@ kbd {
   .lightbox-prev { left: calc(50% - 54px); }
   .lightbox-next { right: calc(50% - 54px); }
 }
+
+
+/* =========================================================
+   Заставка при входе (js/intro.js). Видна, только если у <html>
+   есть класс show-intro — его ставит JS один раз за визит.
+   Таймлайн: 0.1–1.25 с колесо въезжает и скидит,
+   1.05 с название, 1.9–2.5 с шторка уходит вверх.
+   ========================================================= */
+.intro {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  padding: 1rem;
+  background-color: var(--fg-bg-deep);
+  cursor: pointer;
+}
+html.show-intro {
+  overflow: hidden;              /* пока идёт заставка, страница не скроллится */
+}
+html.show-intro .intro {
+  display: flex;
+  animation: intro-leave 0.6s cubic-bezier(0.7, 0, 0.3, 1) 1.9s forwards;
+}
+/* пропустили — быстро растворяется */
+html.show-intro .intro.is-skipping {
+  animation: intro-fade 0.25s ease forwards;
+}
+@keyframes intro-leave {
+  to { transform: translateY(-100%); }
+}
+@keyframes intro-fade {
+  to { opacity: 0; }
+}
+
+.intro-stage {
+  position: relative;
+  width: min(520px, 86vw);
+  height: 110px;
+}
+.intro-road {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 3px;
+  border-radius: 2px;
+  background-color: var(--fg-border);
+}
+/* Колесо: катится (крутится), потом скид — вращение стоп, ещё скользит */
+.intro-wheel {
+  position: absolute;
+  z-index: 2;
+  left: 50%;
+  bottom: 3px;
+  width: 96px;
+  height: 96px;
+  margin-left: -48px;
+  animation: intro-roll 1.15s 0.1s both;
+}
+@keyframes intro-roll {
+  0%   { transform: translateX(-60vw) rotate(-900deg); animation-timing-function: linear; }
+  60%  { transform: translateX(-70px) rotate(0deg); animation-timing-function: cubic-bezier(0.2, 0.8, 0.3, 1); }
+  100% { transform: translateX(0) rotate(0deg); }
+}
+/* След от скида растёт, пока колесо скользит */
+.intro-mark {
+  position: absolute;
+  z-index: 1;                    /* поверх линии дороги */
+  bottom: 2px;
+  left: calc(50% - 70px);
+  width: 0;
+  height: 6px;
+  border-radius: 3px;
+  background: linear-gradient(90deg, transparent, var(--fg-muted) 40%, var(--fg-text));
+  animation: intro-mark 0.46s cubic-bezier(0.2, 0.8, 0.3, 1) 0.79s forwards;
+}
+@keyframes intro-mark {
+  to { width: 70px; }
+}
+.intro-title {
+  margin: 0;
+  font-family: var(--fg-font-display);
+  font-weight: 800;
+  font-size: clamp(1.8rem, 7vw, 3.4rem);
+  text-transform: uppercase;
+  text-align: center;
+  color: var(--fg-text);
+  opacity: 0;
+  animation: intro-title 0.55s ease-out 1.05s forwards;
+}
+.intro-title span {
+  color: var(--fg-accent);
+}
+@keyframes intro-title {
+  from { opacity: 0; transform: translateY(16px); letter-spacing: 0.3em; }
+  to   { opacity: 1; transform: none; letter-spacing: 0.02em; }
+}
+.intro-hint {
+  position: absolute;
+  bottom: 1.5rem;
+  margin: 0;
+  color: var(--fg-muted);
+  font-size: 0.85rem;
+}
+
+/* =========================================================
+   Появление первого экрана. Без JS всё видно сразу;
+   с JS элементы ждут класс hero-go и выезжают по очереди.
+   ========================================================= */
+.hero-title .line {
+  display: block;
+  overflow: hidden;              /* строка "выезжает" снизу из-под маски */
+  padding-bottom: 0.04em;
+}
+.hero-title .line > span {
+  display: inline-block;
+}
+html.hero-anim .hero-title .line > span {
+  transform: translateY(110%);
+}
+html.hero-anim .reveal,
+html.hero-anim .reveal-photo {
+  opacity: 0;
+}
+html.hero-anim.hero-go .hero-title .line > span {
+  animation: hero-rise 0.8s cubic-bezier(0.2, 0.7, 0.2, 1) forwards;
+}
+html.hero-anim.hero-go .hero-title .line:nth-child(2) > span { animation-delay: 0.1s; }
+html.hero-anim.hero-go .hero-title .line:nth-child(3) > span { animation-delay: 0.2s; }
+html.hero-anim.hero-go .reveal {
+  animation: hero-fade-up 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) forwards;
+}
+html.hero-anim.hero-go .reveal-2 { animation-delay: 0.35s; }
+html.hero-anim.hero-go .reveal-3 { animation-delay: 0.45s; }
+html.hero-anim.hero-go .reveal-4 { animation-delay: 0.55s; }
+html.hero-anim.hero-go .reveal-photo {
+  animation: hero-photo-in 0.9s cubic-bezier(0.2, 0.7, 0.2, 1) 0.25s forwards;
+}
+@keyframes hero-rise {
+  to { transform: translateY(0); }
+}
+@keyframes hero-fade-up {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: none; }
+}
+@keyframes hero-photo-in {
+  from { opacity: 0; transform: translateX(40px) rotate(3deg); }
+  to   { opacity: 1; transform: none; }
+}

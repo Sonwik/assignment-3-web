@@ -36,6 +36,7 @@ let skidCount = 0;
 let skidMark = null;        // элемент следа текущего скида
 let skidStartX = 0;
 let lastTime = null;
+let autoSkidDone = false;     // первый скид велик делает сам — показать, что он умеет
 
 // Масштаб: на телефоне SVG меньше, чем 220px
 function getScale() {
@@ -119,6 +120,12 @@ function frame(time) {
     }
   } else if (!isStopped && speed < CRUISE_SPEED) {
     speed = Math.min(speed + ACCELERATION * dt, CRUISE_SPEED);
+  }
+
+  // Сам делает скид, когда впервые доехал до 40% дороги
+  if (!autoSkidDone && x > road.offsetWidth * 0.4) {
+    autoSkidDone = true;
+    startSkid();
   }
 
   // 2. Положение. Уехал за правый край — появляется слева

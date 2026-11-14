@@ -129,3 +129,117 @@
   from { transform: translate(0, 0) scale(0.6); opacity: 0.9; }
   to   { transform: translate(-22px, -26px) scale(2.2); opacity: 0; }
 }
+
+/* =========================================================
+   Garage: покраска, свечение, вилка, обмотка, надпись,
+   стикеры и аксессуары. Включаются классами и display (js/garage-data.js)
+   ========================================================= */
+
+/* Вилка и обмотка руля/седло — свои цвета (по умолчанию как рама / руль) */
+.bike-art .fork {
+  stroke: var(--bike-fork, var(--bike-frame));
+  stroke-width: 5;
+  stroke-linecap: round;
+}
+.bike-art .cockpit .tape {
+  stroke: var(--bike-tape, var(--bike-bar, var(--bike-tire)));
+}
+
+/* Покраска Fade: рама — градиент из двух цветов */
+.bike-art .fade-a { stop-color: var(--bike-frame); }
+.bike-art .fade-b { stop-color: var(--bike-frame2, var(--bike-frame)); }
+.bike-art.paint-fade .frame polyline,
+.bike-art.paint-fade .frame line {
+  stroke: url(#frame-fade);
+}
+/* Покраска Stripe: тонкая полоса второго цвета */
+.bike-art .frame-stripe polyline {
+  fill: none;
+  stroke: var(--bike-frame2, #fff);
+  stroke-width: 1.6;
+  stroke-linejoin: round;
+}
+
+/* Свечение (неон) */
+.bike-art.glow-frame .frame,
+.bike-art.glow-frame .frame-stripe,
+.bike-art.glow-frame .fork-group,
+.bike-art.glow-rims .rim {
+  filter: url(#bike-glow);
+}
+.bike-art.glow-frame .frame,
+.bike-art.glow-rims .rim {
+  animation: neon-pulse 2.4s ease-in-out infinite;
+}
+@keyframes neon-pulse {
+  50% { opacity: 0.75; }
+}
+
+/* Надпись на раме */
+.bike-art .frame-text {
+  fill: var(--bike-text, #f8f9fa);
+  font-family: var(--fg-font-display);
+  font-size: 4.4px;
+  font-weight: 800;
+  letter-spacing: 0.3px;
+  text-anchor: middle;
+  dominant-baseline: central;
+}
+
+/* Стикеры */
+.bike-art [data-sticker="star"]  { fill: #ffd43b; stroke: #16191c; stroke-width: 0.5; }
+.bike-art [data-sticker="bolt"]  { fill: #4dabf7; stroke: #16191c; stroke-width: 0.5; }
+.bike-art [data-sticker="flame"] { fill: #ff6b35; stroke: #ffd43b; stroke-width: 0.6; }
+.bike-art [data-sticker="heart"] { fill: #f03e3e; stroke: #fff; stroke-width: 0.5; }
+.bike-art .sticker-smile circle  { fill: #ffd43b; stroke: #16191c; stroke-width: 0.5; }
+.bike-art .sticker-smile path    { fill: none; stroke: #16191c; stroke-width: 0.6; stroke-linecap: round; }
+.bike-art .sticker-gear {
+  fill: #16191c;
+  stroke: #f8f9fa;
+  stroke-width: 0.25;
+  font-family: var(--fg-font-display);
+  font-size: 4px;
+  font-weight: 800;
+  text-anchor: middle;
+  dominant-baseline: central;
+}
+
+/* Аксессуары */
+.bike-art .flag-pole   { stroke: #adb5bd; stroke-width: 1; }
+.bike-art .flag-cloth  { fill: #ff6b35; transform-box: fill-box; transform-origin: left center; animation: flag-wave 1.2s ease-in-out infinite; }
+.bike-art .rack        { fill: none; stroke: #868e96; stroke-width: 1.6; stroke-linecap: round; }
+.bike-art .tree-leaves { fill: #2b8a3e; stroke: #1b5e20; stroke-width: 0.5; }
+.bike-art .tree-star   { fill: #ffd43b; }
+.bike-art .tree-ball.b1 { fill: #f03e3e; }
+.bike-art .tree-ball.b2 { fill: #ffd43b; }
+.bike-art .tree-ball.b3 { fill: #4dabf7; }
+.bike-art .bottle      { fill: #3bc9db; stroke: #0b7285; stroke-width: 0.5; }
+.bike-art .bottle-cap  { fill: #16191c; }
+.bike-art .garland-wire { fill: none; stroke: #2b8a3e; stroke-width: 0.6; }
+.bike-art .bulb.b1     { fill: #ff6b6b; animation: bulb-blink 1.2s steps(2, jump-none) infinite; }
+.bike-art .bulb.b2     { fill: #ffd43b; animation: bulb-blink 1.2s steps(2, jump-none) 0.4s infinite; }
+.bike-art .bulb.b3     { fill: #4dabf7; animation: bulb-blink 1.2s steps(2, jump-none) 0.8s infinite; }
+.bike-art .duck        { fill: #ffd43b; stroke: #e0a800; stroke-width: 0.4; }
+.bike-art .duck-beak   { fill: #ff922b; }
+.bike-art .duck-eye    { fill: #16191c; }
+.bike-art .santa-red   { fill: #e03131; }
+.bike-art .santa-white { fill: #f8f9fa; }
+.bike-art .basket      { fill: rgba(160, 112, 60, 0.25); stroke: #a0703c; stroke-width: 0.9; stroke-linejoin: round; }
+.bike-art .bell        { fill: #fcc419; stroke: #e67700; stroke-width: 0.4; }
+.bike-art .tinsel      { transform-box: fill-box; transform-origin: top center; animation: tinsel-sway 1.6s ease-in-out infinite; }
+.bike-art .tinsel path { fill: none; stroke-width: 1.2; stroke-linecap: round; stroke-dasharray: 1.4 0.8; }
+.bike-art .tinsel .t1  { stroke: #ced4da; }
+.bike-art .tinsel .t2  { stroke: #ffd43b; }
+.bike-art .tinsel .t3  { stroke: #ff6b6b; }
+.bike-art .tinsel .t4  { stroke: #69db7c; }
+.bike-art .rear-light  { fill: #ff2b2b; filter: url(#bike-glow); animation: bulb-blink 0.8s steps(2, jump-none) infinite; }
+
+@keyframes flag-wave {
+  50% { transform: skewY(8deg) scaleX(0.9); }
+}
+@keyframes tinsel-sway {
+  50% { transform: rotate(8deg); }
+}
+@keyframes bulb-blink {
+  50% { opacity: 0.25; }
+}

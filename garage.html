@@ -19,6 +19,7 @@
     <script src="https://code.jquery.com/jquery-3.7.1.min.js" defer></script>
     <script src="js/garage-data.js" defer></script>
     <script src="js/garage.js" defer></script>
+    <script src="js/outfit.js" defer></script>
     <script src="js/effects.js" defer></script>
     <script src="js/keychain.js" defer></script>
 </head>
@@ -87,11 +88,37 @@
                                     <stop offset="0" stop-color="#fff3bf" stop-opacity="0.6"/>
                                     <stop offset="1" stop-color="#fff3bf" stop-opacity="0"/>
                                 </linearGradient>
+                                <!-- Покраска "Fade": цвет рамы плавно переходит во второй цвет -->
+                                <linearGradient id="frame-fade" gradientUnits="userSpaceOnUse" x1="45" y1="0" x2="160" y2="0">
+                                    <stop class="fade-a" offset="0"/>
+                                    <stop class="fade-b" offset="1"/>
+                                </linearGradient>
+                                <!-- Неоновое свечение: размытая копия детали под самой деталью -->
+                                <filter id="bike-glow" x="-50%" y="-50%" width="200%" height="200%">
+                                    <feGaussianBlur in="SourceGraphic" stdDeviation="1.3" result="blur"/>
+                                    <feMerge>
+                                        <feMergeNode in="blur"/>
+                                        <feMergeNode in="SourceGraphic"/>
+                                    </feMerge>
+                                </filter>
                             </defs>
                             <!-- Фара (видна только в тёмной теме, css/bike.css) -->
                             <g class="headlight">
                                 <polygon class="beam" points="167,37 330,82 330,124"/>
                                 <circle class="lamp" cx="166" cy="38" r="3"/>
+                            </g>
+                            <!-- Аксессуары сзади велика: флажок, багажник с ёлкой -->
+                            <g class="acc" data-acc="flag" display="none">
+                                <line class="flag-pole" x1="45" y1="92" x2="36" y2="4"/>
+                                <path class="flag-cloth" d="M36 4 L58 9 L37.4 17 Z"/>
+                            </g>
+                            <g class="acc" data-acc="tree" display="none">
+                                <path class="rack" d="M26 52 L64 52 M30 52 L45 92 M82 46 L62 52"/>
+                                <path class="tree-leaves" d="M45 22 L54 34 L50 34 L57 43 L52 43 L59 52 L31 52 L38 43 L33 43 L40 34 L36 34 Z"/>
+                                <circle class="tree-ball b1" cx="42" cy="38" r="1.6"/>
+                                <circle class="tree-ball b2" cx="50" cy="46" r="1.6"/>
+                                <circle class="tree-ball b3" cx="39" cy="48" r="1.6"/>
+                                <path class="tree-star" d="M45 17 L46.2 20.2 L49.6 20.3 L46.9 22.3 L47.9 25.6 L45 23.7 L42.1 25.6 L43.1 22.3 L40.4 20.3 L43.8 20.2 Z"/>
                             </g>
                             <!-- Заднее колесо: крутится, при скиде блокируется -->
                             <g id="wheel-rear">
@@ -130,7 +157,29 @@
                                 <polyline points="45,92 98,95 84,40 45,92"/>
                                 <polyline points="84,40 152,44 98,95"/>
                                 <line x1="152" y1="44" x2="157" y2="60"/>
-                                <line x1="157" y1="60" x2="175" y2="92"/>
+                            </g>
+                            <!-- Гоночная полоса: тонкая линия второго цвета по центру труб -->
+                            <g class="frame-stripe" display="none">
+                                <polyline points="45,92 98,95 84,40 45,92"/>
+                                <polyline points="84,40 152,44 98,95"/>
+                            </g>
+                            <!-- Вилка (может быть другого цвета) -->
+                            <g class="fork-group">
+                                <line class="fork" x1="157" y1="60" x2="175" y2="92"/>
+                            </g>
+                            <!-- Надпись на нижней трубе -->
+                            <text class="frame-text" x="125" y="69.5" transform="rotate(-43.4 125 69.5)" display="none"></text>
+                            <!-- Стикеры -->
+                            <g class="stickers">
+                                <path class="sticker" data-sticker="star" d="M87 45.5 L88.1 48.4 L91.2 48.5 L88.8 50.4 L89.6 53.4 L87 51.7 L84.4 53.4 L85.2 50.4 L82.8 48.5 L85.9 48.4 Z" display="none"/>
+                                <path class="sticker" data-sticker="bolt" d="M118 38.6 L114.5 43.4 L117.4 43.4 L115.5 47.4 L121.2 41.8 L118.2 41.8 L120.4 38.6 Z" display="none"/>
+                                <path class="sticker" data-sticker="flame" d="M64 96.6 Q66 90 70 92 Q69 89.4 72.6 88.6 Q71.6 91.6 75.4 92.4 Q77.8 94 76 96.6 Z" display="none"/>
+                                <path class="sticker" data-sticker="heart" d="M166 79.6 L162.6 76.2 Q161.2 74.2 163.2 72.9 Q165 72 166 73.8 Q167 72 168.8 72.9 Q170.8 74.2 169.4 76.2 Z" display="none"/>
+                                <g class="sticker-smile" data-sticker="smile" display="none">
+                                    <circle cx="104" cy="41" r="3"/>
+                                    <path d="M102.6 41.6 Q104 43.2 105.4 41.6 M102.9 40 L102.9 40.1 M105.1 40 L105.1 40.1"/>
+                                </g>
+                                <text class="sticker-gear" data-sticker="gear" x="64.5" y="66" transform="rotate(-53.1 64.5 66)" display="none">48×17</text>
                             </g>
                             <!-- Цепь, звезда, шатун -->
                             <g class="drivetrain">
@@ -142,11 +191,53 @@
                             <!-- Седло, вынос и три вида руля (виден один) -->
                             <g class="cockpit">
                                 <line x1="84" y1="40" x2="82" y2="31"/>
-                                <path d="M70 30 L94 30"/>
+                                <path class="tape" d="M70 30 L94 30"/>
                                 <line x1="152" y1="44" x2="150" y2="35"/>
-                                <path data-bar="drop" d="M150 35 L163 34 Q172 34 172 44 Q172 52 164 52"/>
-                                <path data-bar="bullhorn" display="none" d="M150 35 L162 35 Q171 35 174 25"/>
-                                <path data-bar="flat" display="none" d="M147 35 L171 33"/>
+                                <path class="tape" data-bar="drop" d="M150 35 L163 34 Q172 34 172 44 Q172 52 164 52"/>
+                                <path class="tape" data-bar="bullhorn" display="none" d="M150 35 L162 35 Q171 35 174 25"/>
+                                <path class="tape" data-bar="flat" display="none" d="M147 35 L171 33"/>
+                            </g>
+                            <!-- Аксессуары спереди -->
+                            <g class="acc" data-acc="bottle" display="none">
+                                <rect class="bottle" x="94" y="61" width="6" height="18" rx="2" transform="rotate(-14.3 97 70)"/>
+                                <rect class="bottle-cap" x="95.2" y="58.6" width="3.6" height="3" rx="0.8" transform="rotate(-14.3 97 70)"/>
+                            </g>
+                            <g class="acc" data-acc="garland" display="none">
+                                <path class="garland-wire" d="M86 42 Q118 53 150 46"/>
+                                <circle class="bulb b1" cx="94" cy="45.6" r="1.7"/>
+                                <circle class="bulb b2" cx="106" cy="48.4" r="1.7"/>
+                                <circle class="bulb b3" cx="118" cy="49.4" r="1.7"/>
+                                <circle class="bulb b1" cx="130" cy="49" r="1.7"/>
+                                <circle class="bulb b2" cx="142" cy="47.4" r="1.7"/>
+                            </g>
+                            <g class="acc" data-acc="duck" display="none">
+                                <ellipse class="duck" cx="139" cy="37" rx="5" ry="3.4"/>
+                                <circle class="duck" cx="142.6" cy="32.4" r="2.6"/>
+                                <path class="duck-beak" d="M144.8 32 L148 33 L144.8 34 Z"/>
+                                <circle class="duck-eye" cx="143.2" cy="31.6" r="0.6"/>
+                            </g>
+                            <g class="acc" data-acc="santa" display="none">
+                                <path class="santa-red" d="M74 29 Q80 18 92 17 Q100 18 99 24 L94 22 Q90 24 90 29 Z"/>
+                                <rect class="santa-white" x="72" y="27" width="20" height="3.6" rx="1.8"/>
+                                <circle class="santa-white" cx="99" cy="25" r="2.3"/>
+                            </g>
+                            <g class="acc" data-acc="basket" display="none">
+                                <path class="basket" d="M161 36 L182 36 L180 48 L163 48 Z M164 36 L165 48 M169 36 L169.5 48 M174 36 L173.5 48 M179 36 L178 48 M162 40 L181.3 40 M162.6 44 L180.6 44"/>
+                            </g>
+                            <g class="acc" data-acc="bell" display="none">
+                                <path class="bell" d="M155 34 Q155 29.4 158.4 29.4 Q161.8 29.4 161.8 34 Z"/>
+                                <circle class="bell" cx="158.4" cy="28.6" r="0.9"/>
+                            </g>
+                            <g class="acc" data-acc="tinsel" display="none">
+                                <g class="tinsel">
+                                    <path class="t1" d="M166 35 Q164 42 167 48 Q169 53 166 58"/>
+                                    <path class="t2" d="M166 35 Q170 41 168 47 Q166 52 170 57"/>
+                                    <path class="t3" d="M166 35 Q162 40 163 46 Q164 51 161 55"/>
+                                    <path class="t4" d="M166 35 Q172 39 172 45 Q172 50 175 53"/>
+                                </g>
+                            </g>
+                            <g class="acc" data-acc="rearlight" display="none">
+                                <rect class="rear-light" x="78.6" y="33" width="3.4" height="5" rx="1"/>
                             </g>
                         </svg>
                     </div>
@@ -163,6 +254,7 @@
 
                     <div class="garage-actions">
                         <button type="button" class="btn btn-warning" id="btn-save-bike">Save to my garage</button>
+                        <button type="button" class="btn btn-outline-light" id="btn-random-bike">Random bike</button>
                         <button type="button" class="btn btn-outline-light" id="btn-reset-bike">Reset</button>
                     </div>
                     <p class="garage-status" id="garage-status" role="status" aria-live="polite"></p>
@@ -171,31 +263,312 @@
 
             <!-- Варианты деталей: радиокнопки создаёт js/garage.js из массивов -->
             <div class="col-12 col-lg-5">
-                <form class="panel builder-form" id="builder-form" aria-labelledby="builder-title">
+                <form class="panel builder-form" id="builder-form" aria-labelledby="builder-title" novalidate>
                     <h2 class="builder-title" id="builder-title">Choose your parts</h2>
-                    <fieldset class="option-group">
-                        <legend>Frame color</legend>
-                        <div class="option-list" id="opt-frame"></div>
-                    </fieldset>
-                    <fieldset class="option-group">
-                        <legend>Rims</legend>
-                        <div class="option-list" id="opt-rim"></div>
-                    </fieldset>
-                    <fieldset class="option-group">
-                        <legend>Tires</legend>
-                        <div class="option-list" id="opt-tire"></div>
-                    </fieldset>
-                    <fieldset class="option-group">
-                        <legend>Handlebar</legend>
-                        <div class="option-list" id="opt-bar"></div>
-                    </fieldset>
-                    <fieldset class="option-group">
-                        <legend>Front wheel</legend>
-                        <div class="option-list" id="opt-front"></div>
-                    </fieldset>
+
+                    <!-- <details> — раскрывающиеся группы, работают без JS -->
+                    <details class="option-section" open>
+                        <summary>Paint &amp; glow</summary>
+                        <fieldset class="option-group">
+                            <legend>Frame color</legend>
+                            <div class="option-list" id="opt-frame"></div>
+                        </fieldset>
+                        <fieldset class="option-group">
+                            <legend>Paint style</legend>
+                            <div class="option-list" id="opt-paint"></div>
+                        </fieldset>
+                        <fieldset class="option-group" id="color2-group">
+                            <legend>Second color (for Fade and Stripe)</legend>
+                            <div class="option-list" id="opt-color2"></div>
+                        </fieldset>
+                        <fieldset class="option-group">
+                            <legend>Make it glow</legend>
+                            <div class="option-list" id="opt-glow"></div>
+                        </fieldset>
+                    </details>
+
+                    <details class="option-section">
+                        <summary>Parts</summary>
+                        <fieldset class="option-group">
+                            <legend>Fork</legend>
+                            <div class="option-list" id="opt-fork"></div>
+                        </fieldset>
+                        <fieldset class="option-group">
+                            <legend>Rims</legend>
+                            <div class="option-list" id="opt-rim"></div>
+                        </fieldset>
+                        <fieldset class="option-group">
+                            <legend>Tires</legend>
+                            <div class="option-list" id="opt-tire"></div>
+                        </fieldset>
+                        <fieldset class="option-group">
+                            <legend>Bar tape &amp; saddle</legend>
+                            <div class="option-list" id="opt-tape"></div>
+                        </fieldset>
+                        <fieldset class="option-group">
+                            <legend>Handlebar</legend>
+                            <div class="option-list" id="opt-bar"></div>
+                        </fieldset>
+                        <fieldset class="option-group">
+                            <legend>Front wheel</legend>
+                            <div class="option-list" id="opt-front"></div>
+                        </fieldset>
+                    </details>
+
+                    <details class="option-section">
+                        <summary>Text &amp; stickers</summary>
+                        <div class="field">
+                            <label for="bike-text" class="form-label">Text on the down tube</label>
+                            <input type="text" class="form-control fg-input" id="bike-text" maxlength="14" autocomplete="off" placeholder="NO BRAKES" aria-describedby="bike-text-hint bike-text-error">
+                            <p class="field-hint" id="bike-text-hint">Up to 12 characters, +3 000 ₸. Leave empty for no text.</p>
+                            <p class="field-error" id="bike-text-error"></p>
+                        </div>
+                        <fieldset class="option-group">
+                            <legend>Text color</legend>
+                            <div class="option-list" id="opt-text-color"></div>
+                        </fieldset>
+                        <fieldset class="option-group">
+                            <legend>Stickers</legend>
+                            <div class="option-list" id="opt-stickers"></div>
+                        </fieldset>
+                    </details>
+
+                    <details class="option-section">
+                        <summary>Accessories</summary>
+                        <fieldset class="option-group">
+                            <legend>Add as many as you like</legend>
+                            <div class="option-list" id="opt-accessories"></div>
+                        </fieldset>
+                    </details>
                 </form>
             </div>
         </div>
+
+        <!-- Одежда райдера: манекен. JS: js/outfit.js -->
+        <section class="outfit-section" id="outfit" aria-labelledby="outfit-title">
+            <p class="section-eyebrow">Rider outfit</p>
+            <h2 class="section-title" id="outfit-title">Dress the rider</h2>
+            <p class="section-lead">Pick a hat, glasses, a jacket, pants, shoes and a bag — the mannequin changes right away. Not sure? Press "Random outfit" until you like it.</p>
+
+            <div class="row g-4">
+                <div class="col-12 col-lg-5">
+                    <section class="panel studio-panel" aria-labelledby="mannequin-title">
+                        <h3 class="visually-hidden" id="mannequin-title">Mannequin</h3>
+                        <div class="studio mannequin-stage">
+                            <svg class="mannequin" id="mannequin" viewBox="0 0 200 320" width="200" height="320" role="img" aria-label="Mannequin">
+                                <!-- Рюкзак сзади: видна только верхушка над плечами -->
+                                <rect class="mq-bag-main" data-bag="backpack" x="70" y="58" width="60" height="34" rx="12" display="none"/>
+                                <!-- Капюшон лежит за шеей -->
+                                <path class="mq-top-main mq-line" data-top-pattern="hood" d="M78 80 Q78 58 100 56 Q122 58 122 80 Q100 70 78 80 Z" display="none"/>
+
+                                <!-- Манекен -->
+                                <g class="mq-body">
+                                    <rect x="93" y="58" width="14" height="20" rx="4"/>
+                                    <path d="M68 80 Q100 70 132 80 L140 96 L130 178 L70 178 L60 96 Z"/>
+                                    <path d="M62 90 L50 98 L42 186 L54 188 L66 112 Z"/>
+                                    <path d="M138 90 L150 98 L158 186 L146 188 L134 112 Z"/>
+                                    <circle cx="48" cy="195" r="7"/>
+                                    <circle cx="152" cy="195" r="7"/>
+                                    <path d="M72 176 L99 176 L98 288 L80 288 Z"/>
+                                    <path d="M101 176 L128 176 L120 288 L102 288 Z"/>
+                                    <ellipse cx="100" cy="40" rx="19" ry="23"/>
+                                </g>
+                                <g class="mq-stand">
+                                    <rect x="97" y="296" width="6" height="12"/>
+                                    <ellipse cx="100" cy="310" rx="46" ry="7"/>
+                                </g>
+
+                                <!-- Штаны: длинные или шорты + детали -->
+                                <path class="mq-pants-main" data-pants-base="long" d="M68 172 L132 172 L126 289 L102 289 L100 196 L98 289 L74 289 Z"/>
+                                <path class="mq-pants-main" data-pants-base="short" d="M68 172 L132 172 L130 230 L102 230 L100 198 L98 230 L70 230 Z" display="none"/>
+                                <path class="mq-pants-line" data-pants-detail="seams" d="M80 182 L78 286 M120 182 L122 286 M74 182 Q82 192 90 180 M126 182 Q118 192 110 180"/>
+                                <g class="mq-pants-accent" data-pants-detail="pockets" display="none">
+                                    <rect x="66" y="214" width="12" height="18" rx="2"/>
+                                    <rect x="122" y="214" width="12" height="18" rx="2"/>
+                                </g>
+                                <g data-pants-detail="cuffs" display="none">
+                                    <rect class="mq-pants-accent" x="74" y="277" width="25" height="12" rx="3"/>
+                                    <rect class="mq-pants-accent" x="101" y="277" width="25" height="12" rx="3"/>
+                                    <path class="mq-pants-line" d="M96 174 L94 188 M104 174 L106 188"/>
+                                </g>
+                                <path class="mq-pants-stripe" data-pants-detail="stripe" d="M70 176 L71 228 M130 176 L129 228" display="none"/>
+
+                                <!-- Обувь -->
+                                <path class="mq-shoe-main" data-shoe-base="low" d="M74 284 L99 284 L99 298 L66 298 Q66 289 74 284 Z M101 284 L126 284 Q134 289 134 298 L101 298 Z"/>
+                                <path class="mq-shoe-main" data-shoe-base="high" d="M76 266 L99 266 L99 298 L66 298 Q66 288 76 284 Z M101 266 L124 266 L124 284 Q134 288 134 298 L101 298 Z" display="none"/>
+                                <path class="mq-shoe-accent" d="M66 295 L99 295 L99 299 L66 299 Z M101 295 L134 295 L134 299 L101 299 Z"/>
+                                <path class="mq-shoe-line" data-shoe-detail="laces-low" d="M80 288 L95 288 M80 292 L95 292 M105 288 L120 288 M105 292 L120 292"/>
+                                <path class="mq-shoe-line" data-shoe-detail="laces-high" d="M84 272 L96 272 M84 278 L96 278 M84 284 L96 284 M104 272 L116 272 M104 278 L116 278 M104 284 L116 284" display="none"/>
+                                <path class="mq-shoe-strap" data-shoe-detail="straps" d="M73 286 L99 286 M70 291 L99 291 M101 286 L127 286 M101 291 L130 291" display="none"/>
+
+                                <!-- Верх: футболка (короткий рукав) или куртка (длинный) -->
+                                <path class="mq-top-main mq-line" d="M66 79 Q100 68 134 79 L142 96 L133 184 L67 184 L58 96 Z"/>
+                                <path class="mq-top-main mq-line" data-top-base="tee" d="M64 82 L46 96 L44 126 L58 128 L66 108 Z M136 82 L154 96 L156 126 L142 128 L134 108 Z"/>
+                                <path class="mq-top-main mq-line" data-top-base="jacket" d="M64 82 L46 96 L38 186 L56 189 L66 112 Z M136 82 L154 96 L162 186 L144 189 L134 112 Z" display="none"/>
+
+                                <!-- Узоры верха (виден один) -->
+                                <g data-top-pattern="plain" display="none">
+                                    <path class="mq-top-line" d="M90 74 Q100 84 110 74"/>
+                                </g>
+                                <g data-top-pattern="graphic">
+                                    <path class="mq-top-line" d="M90 74 Q100 84 110 74"/>
+                                    <circle class="mq-top-print" cx="100" cy="116" r="13"/>
+                                    <circle class="mq-top-print-fill" cx="100" cy="116" r="4"/>
+                                    <text class="mq-text mq-top-accent-text" x="100" y="146">FIXED</text>
+                                </g>
+                                <g data-top-pattern="hood" display="none">
+                                    <path class="mq-top-line" d="M94 78 L93 104 M106 78 L107 104"/>
+                                    <path class="mq-top-line" d="M78 150 L122 150 L116 176 L84 176 Z"/>
+                                </g>
+                                <g data-top-pattern="racer" display="none">
+                                    <path class="mq-top-accent" d="M60 98 L76 96 L74 184 L67 184 Z M140 98 L124 96 L126 184 L133 184 Z"/>
+                                    <path class="mq-top-detail" d="M66 120 L134 102 L134 110 L66 128 Z M66 134 L134 116 L134 122 L66 140 Z"/>
+                                    <rect class="mq-top-accent" x="88" y="68" width="24" height="12" rx="5"/>
+                                    <path class="mq-top-detail" d="M43 140 L57 142 L56 149 L42 147 Z M157 140 L143 142 L144 149 L158 147 Z"/>
+                                    <text class="mq-text mq-top-detail-text big" x="112" y="168">77</text>
+                                </g>
+                                <g data-top-pattern="team" display="none">
+                                    <rect class="mq-top-accent" x="62" y="112" width="76" height="10"/>
+                                    <rect class="mq-top-detail" x="62" y="124" width="76" height="4"/>
+                                    <rect class="mq-top-accent" x="88" y="68" width="24" height="12" rx="5"/>
+                                    <circle class="mq-top-detail" cx="116" cy="98" r="7"/>
+                                    <circle class="mq-top-accent" cx="116" cy="98" r="3"/>
+                                    <path class="mq-top-accent" d="M41 150 L56 152 L55 159 L40 157 Z M159 150 L144 152 L145 159 L160 157 Z"/>
+                                    <text class="mq-text mq-top-detail-text" x="100" y="160">FGA RACING</text>
+                                </g>
+                                <g data-top-pattern="stripes" display="none">
+                                    <path class="mq-top-stripe" d="M52 96 L44 184 M57 99 L49 186 M148 96 L156 184 M143 99 L151 186"/>
+                                    <path class="mq-top-zip" d="M100 74 L100 184"/>
+                                    <rect class="mq-top-main mq-line" x="88" y="68" width="24" height="12" rx="5"/>
+                                </g>
+                                <g data-top-pattern="quilt" display="none">
+                                    <path class="mq-top-line" d="M62 100 L138 100 M63 116 L137 116 M64 132 L136 132 M65 148 L135 148 M66 164 L134 164 M47 120 L64 120 M45 144 L62 144 M43 166 L60 166 M153 120 L136 120 M155 144 L138 144 M157 166 L140 166"/>
+                                    <rect class="mq-top-main mq-line" x="84" y="66" width="32" height="14" rx="6"/>
+                                </g>
+                                <g data-top-pattern="hivis" display="none">
+                                    <path class="mq-top-detail" d="M68 84 L88 78 L94 122 L106 122 L112 78 L132 84 L134 184 L66 184 Z"/>
+                                    <rect class="mq-reflect" x="66" y="146" width="68" height="6"/>
+                                    <rect class="mq-reflect" x="66" y="164" width="68" height="6"/>
+                                </g>
+                                <g data-top-pattern="denim" display="none">
+                                    <path class="mq-top-line" d="M64 140 L136 140"/>
+                                    <rect class="mq-top-line" x="74" y="104" width="18" height="10" rx="2"/>
+                                    <rect class="mq-top-line" x="108" y="104" width="18" height="10" rx="2"/>
+                                    <path class="mq-top-accent" d="M84 72 L100 90 L116 72 L112 68 L100 80 L88 68 Z"/>
+                                    <g class="mq-top-accent">
+                                        <circle cx="100" cy="100" r="1.8"/>
+                                        <circle cx="100" cy="118" r="1.8"/>
+                                        <circle cx="100" cy="136" r="1.8"/>
+                                        <circle cx="100" cy="154" r="1.8"/>
+                                        <circle cx="100" cy="172" r="1.8"/>
+                                    </g>
+                                </g>
+                                <g data-top-pattern="bomber" display="none">
+                                    <rect class="mq-top-accent" x="86" y="68" width="28" height="11" rx="5"/>
+                                    <rect class="mq-top-accent" x="66" y="174" width="68" height="10" rx="3"/>
+                                    <path class="mq-top-accent" d="M39 178 L56 181 L56 189 L38 186 Z M161 178 L144 181 L144 189 L162 186 Z"/>
+                                    <path class="mq-top-zip" d="M100 78 L100 176"/>
+                                </g>
+                                <g data-top-pattern="santa" display="none">
+                                    <rect class="mq-top-accent" x="64" y="146" width="72" height="9"/>
+                                    <rect class="mq-buckle" x="93" y="144" width="14" height="13" rx="2"/>
+                                    <rect class="mq-top-detail" x="63" y="174" width="74" height="12" rx="6"/>
+                                    <path class="mq-top-detail" d="M38 177 L57 180 L56 191 L37 188 Z M162 177 L143 180 L144 191 L163 188 Z"/>
+                                    <path class="mq-top-detail" d="M96 80 L104 80 L104 144 L96 144 Z"/>
+                                </g>
+
+                                <!-- Головной убор -->
+                                <g data-head="cap">
+                                    <path class="mq-head-main" d="M80 34 Q100 8 120 34 Z"/>
+                                    <path class="mq-head-accent" d="M88 26 Q100 18 112 26 L112 30 Q100 22 88 30 Z"/>
+                                    <path class="mq-head-accent" d="M86 33 Q100 40 114 33 L114 37 Q100 45 86 37 Z"/>
+                                </g>
+                                <g data-head="helmet" display="none">
+                                    <path class="mq-head-main" d="M76 40 Q76 8 100 8 Q124 8 124 40 Q100 30 76 40 Z"/>
+                                    <path class="mq-head-accent" d="M90 14 L92 30 M100 11 L100 30 M110 14 L108 30"/>
+                                    <path class="mq-helmet-strap" d="M79 40 L90 62 M121 40 L110 62"/>
+                                </g>
+                                <g data-head="beanie" display="none">
+                                    <path class="mq-head-main" d="M80 34 Q80 12 100 12 Q120 12 120 34 Z"/>
+                                    <rect class="mq-head-accent" x="78" y="28" width="44" height="9" rx="4"/>
+                                    <circle class="mq-head-accent" cx="100" cy="10" r="6"/>
+                                </g>
+                                <g data-head="santa" display="none">
+                                    <path class="mq-santa-red" d="M80 32 Q86 4 112 6 Q130 8 132 22 L124 24 Q118 16 112 20 Q118 26 120 32 Z"/>
+                                    <rect class="mq-santa-white" x="77" y="28" width="46" height="10" rx="5"/>
+                                    <circle class="mq-santa-white" cx="131" cy="24" r="6"/>
+                                </g>
+
+                                <!-- Очки -->
+                                <g data-glasses="sport" display="none">
+                                    <path class="mq-glass-frame" d="M80 38 Q100 33 120 38 L119 47 Q100 51 81 47 Z"/>
+                                    <path class="mq-glass-lens" d="M83 40 Q100 36 117 40 L116 45 Q100 48 84 45 Z"/>
+                                </g>
+                                <g data-glasses="round" display="none">
+                                    <circle class="mq-glass-lens mq-glass-rim" cx="91" cy="43" r="6"/>
+                                    <circle class="mq-glass-lens mq-glass-rim" cx="109" cy="43" r="6"/>
+                                    <path class="mq-glass-bridge" d="M97 42 Q100 40 103 42"/>
+                                </g>
+
+                                <!-- Сумки -->
+                                <g data-bag="messenger">
+                                    <path class="mq-bag-strap" d="M132 82 L74 166"/>
+                                    <rect class="mq-bag-main" x="42" y="152" width="40" height="30" rx="4"/>
+                                    <path class="mq-bag-accent" d="M42 156 L82 156 L82 170 Q62 176 42 170 Z"/>
+                                    <rect class="mq-bag-buckle" x="58" y="166" width="8" height="6" rx="1"/>
+                                </g>
+                                <g data-bag="backpack" display="none">
+                                    <path class="mq-bag-strap" d="M82 80 Q76 120 80 152 M118 80 Q124 120 120 152"/>
+                                    <rect class="mq-bag-accent" x="80" y="110" width="40" height="5" rx="2"/>
+                                </g>
+                                <g data-bag="sling" display="none">
+                                    <path class="mq-bag-strap thin" d="M64 90 L136 160"/>
+                                    <rect class="mq-bag-main" x="80" y="116" width="42" height="18" rx="9" transform="rotate(44 101 125)"/>
+                                    <path class="mq-bag-zip" d="M88 115 L113 139"/>
+                                </g>
+                            </svg>
+                        </div>
+                        <p class="studio-caption mt-3" id="outfit-caption" aria-live="polite"></p>
+                        <p class="price-total">Outfit <strong id="outfit-total">0 ₸</strong></p>
+                        <div class="garage-actions">
+                            <button type="button" class="btn btn-warning" id="btn-random-outfit">Random outfit</button>
+                            <button type="button" class="btn btn-outline-light" id="btn-save-outfit">Save outfit</button>
+                        </div>
+                        <p class="garage-status" id="outfit-status" role="status" aria-live="polite"></p>
+                    </section>
+                </div>
+
+                <div class="col-12 col-lg-7">
+                    <form class="panel builder-form" id="outfit-form" aria-labelledby="wardrobe-title" novalidate>
+                        <h3 class="builder-title" id="wardrobe-title">Wardrobe</h3>
+                        <fieldset class="option-group">
+                            <legend>Headwear</legend>
+                            <div class="option-list" id="opt-head"></div>
+                        </fieldset>
+                        <fieldset class="option-group">
+                            <legend>Glasses</legend>
+                            <div class="option-list" id="opt-glasses"></div>
+                        </fieldset>
+                        <fieldset class="option-group">
+                            <legend>Jacket or top</legend>
+                            <div class="option-list" id="opt-top"></div>
+                        </fieldset>
+                        <fieldset class="option-group">
+                            <legend>Pants</legend>
+                            <div class="option-list" id="opt-pants"></div>
+                        </fieldset>
+                        <fieldset class="option-group">
+                            <legend>Shoes</legend>
+                            <div class="option-list" id="opt-shoes"></div>
+                        </fieldset>
+                        <fieldset class="option-group">
+                            <legend>Bag</legend>
+                            <div class="option-list" id="opt-bag"></div>
+                        </fieldset>
+                    </form>
+                </div>
+            </div>
+        </section>
 
         <!-- Spoke card -->
         <section class="spoke-section" id="spoke-card" aria-labelledby="card-title">

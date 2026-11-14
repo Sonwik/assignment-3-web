@@ -1,17 +1,22 @@
 // =====================================================
 // Garage (garage.html): конструктор фикса + spoke card.
 // Варианты деталей — массивы из js/garage-data.js.
-// Радиокнопки создаются циклом, рисунок красится CSS-переменными.
+// Радиокнопки и галочки создаются циклом, рисунок красится CSS-переменными.
+// Одежда манекена — в js/outfit.js (использует функции этого файла).
 // =====================================================
 
 const NICK_PATTERN = /^[A-Za-z0-9]{2,10}$/;   // только латиница и цифры, 2–10 символов
 const NUMBER_MIN = 1;
 const NUMBER_MAX = 999;
 
+// Новая копия варианта по умолчанию (с отдельными массивами внутри)
+function freshDefault() {
+  return JSON.parse(JSON.stringify(GARAGE_DEFAULT));
+}
+
 // ---------- Состояние: текущий велик ----------
-// Есть сохранённый — начинаем с него, нет — с варианта по умолчанию.
-// { ...GARAGE_DEFAULT } делает копию объекта, чтобы не менять сам GARAGE_DEFAULT
-let config = loadGarage() || { ...GARAGE_DEFAULT };
+// Есть сохранённый — начинаем с него, нет — с варианта по умолчанию
+let config = loadGarage() || freshDefault();
 
 // ---------- Элементы ----------
 const bikeSvg = document.querySelector('#studio .bike-art');
@@ -22,6 +27,7 @@ const priceLinesEl = document.querySelector('#price-lines');
 const priceTotalEl = document.querySelector('#price-total');
 const garageStatus = document.querySelector('#garage-status');
 const spinButton = document.querySelector('#btn-spin');
+const bikeTextInput = document.querySelector('#bike-text');
 
 const cardForm = document.querySelector('#card-form');
 const nickInput = document.querySelector('#card-nick');
@@ -29,23 +35,36 @@ const numberInput = document.querySelector('#card-number');
 const cardStatus = document.querySelector('#card-status');
 const cardPreview = document.querySelector('#card-preview');
 
-// Какая группа радиокнопок -> какой массив
+// Группы вариантов: имя в config -> массив -> контейнер.
+// radio — выбирается один вариант, checkbox — сколько угодно
 const GROUPS = [
-  { name: 'frame', list: FRAME_COLORS, container: '#opt-frame' },
-  { name: 'rim',   list: RIM_COLORS,   container: '#opt-rim' },
-  { name: 'tire',  list: TIRES,        container: '#opt-tire' },
-  { name: 'bar',   list: BARS,         container: '#opt-bar' },
-  { name: 'front', list: FRONT_WHEELS, container: '#opt-front' }
+  { name: 'frame',       list: FRAME_COLORS, container: '#opt-frame',  type: 'radio' },
+  { name: 'paint',       list: PAINT_STYLES, container: '#opt-paint',  type: 'radio' },
+  { name: 'color2',      list: FRAME_COLORS, container: '#opt-color2', type: 'radio', noPrice: true },
+  { name: 'glow',        list: GLOW_PARTS,   container: '#opt-glow',   type: 'checkbox' },
+  { name: 'fork',        list: FORK_COLORS,  container: '#opt-fork',   type: 'radio' },
+  { name: 'rim',         list: RIM_COLORS,   container: '#opt-rim',    type: 'radio' },
+  { name: 'tire',        list: TIRES,        container: '#opt-tire',   type: 'radio' },
+  { name: 'tape',        list: TAPE_COLORS,  container: '#opt-tape',   type: 'radio' },
+  { name: 'bar',         list: BARS,         container: '#opt-bar',    type: 'radio' },
+  { name: 'front',       list: FRONT_WHEELS, container: '#opt-front',  type: 'radio' },
+  { name: 'textColor',   list: TEXT_COLORS,  container: '#opt-text-color', type: 'radio', noPrice: true },
+  { name: 'stickers',    list: STICKERS,     container: '#opt-stickers',    type: 'checkbox' },
+  { name: 'accessories', list: ACCESSORIES,  container: '#opt-accessories', type: 'checkbox' }
 ];
 
-// ---------- Радиокнопки из массива ----------
+// ---------- Варианты из массива ----------
 // Цвет кружка: цвет детали, у шин — протектор и боковина
 function getSwatch(option) {
-  if (option.color !== undefined) {
+  if (option.color !== undefined && option.color !== null) {
     return option.color;
   }
   if (option.tread !== undefined) {
     return 'radial-gradient(circle, ' + option.wall + ' 45%, ' + option.tread + ' 47%)';
+  }
+  if (option.main !== undefined) {
+    // одежда: кружок из двух цветов
+    return 'linear-gradient(135deg, ' + option.main + ' 55%, ' + option.accent + ' 55%)';
   }
   return '';
 }
@@ -54,8 +73,10 @@ function priceLabel(price) {
   return price === 0 ? 'included' : '+' + formatTenge(price);
 }
 
-function renderOptions(group, selectedId, showPrice) {
+// selected — id (для radio) или массив id (для checkbox)
+function renderOptions(group, selected, showPrice) {
   const container = document.querySelector(group.container);
+  const type = group.type || 'radio';
   container.replaceChildren();
 
   for (const option of group.list) {
@@ -63,11 +84,11 @@ function renderOptions(group, selectedId, showPrice) {
     label.className = 'option';
 
     const input = document.createElement('input');
-    input.type = 'radio';
+    input.type = type;
     input.name = group.name;
     input.value = option.id;
     input.className = 'option-input';
-    input.checked = option.id === selectedId;
+    input.checked = type === 'checkbox' ? selected.includes(option.id) : option.id === selected;
 
     const body = document.createElement('span');
     body.className = 'option-body';
@@ -85,7 +106,7 @@ function renderOptions(group, selectedId, showPrice) {
     name.textContent = option.name;
     body.appendChild(name);
 
-    if (showPrice) {
+    if (showPrice && option.price !== undefined) {
       const price = document.createElement('span');
       price.className = 'option-price';
       price.textContent = priceLabel(option.price);
@@ -99,10 +120,11 @@ function renderOptions(group, selectedId, showPrice) {
 
 function renderAllOptions() {
   for (const group of GROUPS) {
-    renderOptions(group, config[group.name], true);
+    renderOptions(group, config[group.name], !group.noPrice);
   }
   const cardColor = config.card !== null ? config.card.color : CARD_COLORS[0].id;
   renderOptions({ name: 'card-color', list: CARD_COLORS, container: '#opt-card' }, cardColor, false);
+  bikeTextInput.value = config.text;
 }
 
 // ---------- Цена ----------
@@ -110,17 +132,27 @@ function formatTenge(value) {
   return value.toLocaleString('ru-RU') + ' ₸';
 }
 
-// Строки цены: базовые детали + выбранные варианты
+// Строки цены: базовые детали + всё платное, что выбрано
 function getPriceLines() {
   const lines = [];
   for (const part of GARAGE_BASE) {
     lines.push({ name: part.name, price: part.price });
   }
   for (const group of GROUPS) {
-    const option = findOption(group.list, config[group.name]);
-    if (option.price > 0) {
-      lines.push({ name: option.name, price: option.price });
+    if (group.noPrice) {
+      continue;
     }
+    // для radio — один выбранный вариант, для checkbox — все отмеченные
+    const ids = group.type === 'checkbox' ? config[group.name] : [config[group.name]];
+    for (const id of ids) {
+      const option = findOption(group.list, id);
+      if (option.price > 0) {
+        lines.push({ name: option.name, price: option.price });
+      }
+    }
+  }
+  if (config.text !== '') {
+    lines.push({ name: 'Frame text "' + config.text.toUpperCase() + '"', price: TEXT_PRICE });
   }
   return lines;
 }
@@ -148,13 +180,23 @@ function updateBike() {
   applyGarageToBike(bikeSvg, config, true);
 
   const frame = findOption(FRAME_COLORS, config.frame);
-  const rim = findOption(RIM_COLORS, config.rim);
-  const tire = findOption(TIRES, config.tire);
-  const bar = findOption(BARS, config.bar);
-  const caption = frame.name + ' frame, ' + rim.name.toLowerCase() + ' rims, ' +
-    tire.name.toLowerCase() + ', ' + bar.name.toLowerCase();
+  const paint = findOption(PAINT_STYLES, config.paint);
+  let caption = frame.name + ' frame';
+  if (config.paint !== 'solid') {
+    caption = caption + ' with ' + paint.name.toLowerCase();
+  }
+  caption = caption + ', ' + findOption(BARS, config.bar).name.toLowerCase();
+  if (config.accessories.length > 0) {
+    caption = caption + ', ' + config.accessories.length + ' accessories';
+  }
+  if (config.stickers.length > 0) {
+    caption = caption + ', ' + config.stickers.length + ' stickers';
+  }
   captionEl.textContent = caption;
   bikeSvg.setAttribute('aria-label', 'Your bike: ' + caption);
+
+  // второй цвет нужен только для Fade и Stripe
+  document.querySelector('#color2-group').disabled = config.paint === 'solid';
 
   renderPrice();
 }
@@ -164,11 +206,75 @@ function showStatus(element, text, type) {
   element.className = 'garage-status ' + type;
 }
 
+function markNotSaved() {
+  showStatus(garageStatus, 'Not saved yet.', 'status-warn');
+}
+
 // ---------- Конструктор: события ----------
 builderForm.addEventListener('change', function (event) {
-  config[event.target.name] = event.target.value;
+  const input = event.target;
+  if (input === bikeTextInput) {
+    return;                       // надпись обрабатывается ниже, на input
+  }
+  if (input.type === 'checkbox') {
+    // новый массив: добавить id или убрать его
+    if (input.checked) {
+      config[input.name] = config[input.name].concat(input.value);
+    } else {
+      config[input.name] = config[input.name].filter(function (id) {
+        return id !== input.value;
+      });
+    }
+  } else {
+    config[input.name] = input.value;
+  }
   updateBike();
-  showStatus(garageStatus, 'Not saved yet.', 'status-warn');
+  markNotSaved();
+});
+
+// Надпись на раме: проверяется при каждом вводе
+bikeTextInput.addEventListener('input', function () {
+  const value = bikeTextInput.value;
+  const errorEl = document.querySelector('#bike-text-error');
+  if (TEXT_PATTERN.test(value)) {
+    errorEl.textContent = '';
+    bikeTextInput.classList.remove('is-invalid');
+    bikeTextInput.removeAttribute('aria-invalid');
+    config.text = value.trim();
+    updateBike();
+    markNotSaved();
+  } else {
+    errorEl.textContent = 'Up to 12 Latin letters, digits, spaces and ! . -';
+    bikeTextInput.classList.add('is-invalid');
+    bikeTextInput.setAttribute('aria-invalid', 'true');
+  }
+});
+// Enter в поле надписи не отправляет форму
+builderForm.addEventListener('submit', function (event) {
+  event.preventDefault();
+});
+
+// Случайный велик: в каждой группе случайный вариант,
+// каждую галочку ставим с шансом 30%
+function randomItem(list) {
+  return list[Math.floor(Math.random() * list.length)];
+}
+
+document.querySelector('#btn-random-bike').addEventListener('click', function () {
+  for (const group of GROUPS) {
+    if (group.type === 'checkbox') {
+      config[group.name] = group.list.filter(function () {
+        return Math.random() < 0.3;
+      }).map(function (option) {
+        return option.id;
+      });
+    } else {
+      config[group.name] = randomItem(group.list).id;
+    }
+  }
+  renderAllOptions();
+  updateBike();
+  showStatus(garageStatus, 'Random bike! Press it again or Save if you like it.', 'status-warn');
 });
 
 document.querySelector('#btn-save-bike').addEventListener('click', function () {
@@ -179,11 +285,17 @@ document.querySelector('#btn-save-bike').addEventListener('click', function () {
   }
 });
 
+// Сброс велика: spoke card и одежда остаются
 document.querySelector('#btn-reset-bike').addEventListener('click', function () {
-  config = { ...GARAGE_DEFAULT };
+  const card = config.card;
+  const outfit = config.outfit;
+  config = freshDefault();
+  config.card = card;
+  config.outfit = outfit;
   renderAllOptions();
   updateBike();
-  updateCardPreview();
+  document.querySelector('#bike-text-error').textContent = '';
+  bikeTextInput.classList.remove('is-invalid');
   showStatus(garageStatus, 'Back to the default bike. Press Save to keep it.', 'status-warn');
 });
 

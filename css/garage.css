@@ -233,3 +233,153 @@
 .card-preview .card-number { font-size: 84px; }
 .card-preview .card-nick   { font-size: 24px; }
 .card-preview .card-small  { font-size: 11px; font-weight: 600; letter-spacing: 0.08em; }
+
+/* ---------- Раскрывающиеся группы вариантов (<details>) ---------- */
+.option-section {
+  border-top: 1px solid var(--fg-border);
+  padding: 0.25rem 0;
+}
+.option-section:last-of-type {
+  border-bottom: 1px solid var(--fg-border);
+}
+.option-section summary {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 0.25rem;
+  cursor: pointer;
+  font-family: var(--fg-font-display);
+  font-weight: 800;
+  font-size: 1.05rem;
+  list-style: none;
+}
+.option-section summary::-webkit-details-marker {
+  display: none;
+}
+.option-section summary::after {
+  content: "+";
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border: 1px solid var(--fg-border);
+  border-radius: 50%;
+  color: var(--fg-accent);
+  transition: transform 0.25s ease;
+}
+.option-section[open] summary::after {
+  transform: rotate(45deg);
+}
+.option-section summary:hover {
+  color: var(--fg-accent);
+}
+.option-section > .option-group,
+.option-section > .field {
+  padding: 0 0.25rem;
+}
+/* второй цвет не нужен при Solid — группа выключена */
+.option-group:disabled {
+  opacity: 0.45;
+}
+.option-group:disabled .option {
+  cursor: not-allowed;
+}
+
+/* Длинный список цены — со своей прокруткой */
+.price-lines {
+  max-height: 240px;
+  overflow-y: auto;
+  padding-right: 0.25rem;
+}
+
+/* На компьютере превью велика "прилипает", пока листаешь варианты */
+@media (min-width: 992px) {
+  .studio-panel {
+    position: sticky;
+    top: 84px;
+  }
+}
+
+/* =========================================================
+   Манекен (js/outfit.js). Цвета одежды — CSS-переменные,
+   которые JS ставит на <svg id="mannequin">
+   ========================================================= */
+.outfit-section {
+  margin-top: 4rem;
+}
+.mannequin-stage {
+  display: flex;
+  justify-content: center;
+  padding: 1.5rem 1rem 1rem;
+}
+.mannequin-stage::after {
+  display: none;               /* у манекена своя подставка */
+}
+.mannequin {
+  width: 100%;
+  max-width: 260px;
+  height: auto;
+}
+.mq-body path,
+.mq-body rect,
+.mq-body circle,
+.mq-body ellipse {
+  fill: #e9ecef;
+  stroke: #adb5bd;
+  stroke-width: 0.8;
+}
+.mq-stand rect,
+.mq-stand ellipse {
+  fill: #6c757d;
+}
+
+/* общие стили линий одежды */
+.mq-line { stroke: rgba(0, 0, 0, 0.25); stroke-width: 0.8; }
+.mq-top-main     { fill: var(--top-main); }
+.mq-top-accent   { fill: var(--top-accent); }
+.mq-top-detail   { fill: var(--top-detail); }
+.mq-top-line     { fill: none; stroke: var(--top-accent); stroke-width: 1.4; stroke-linecap: round; }
+.mq-top-stripe   { fill: none; stroke: var(--top-detail); stroke-width: 2; }
+.mq-top-zip      { fill: none; stroke: var(--top-detail); stroke-width: 1.4; stroke-dasharray: 2 1.5; }
+.mq-top-print    { fill: none; stroke: var(--top-accent); stroke-width: 3; stroke-dasharray: 3 2; }
+.mq-top-print-fill { fill: var(--top-detail); }
+.mq-reflect      { fill: #ced4da; }
+.mq-buckle       { fill: none; stroke: #ffd43b; stroke-width: 2; }
+.mq-text {
+  font-family: var(--fg-font-display);
+  font-weight: 800;
+  font-size: 9px;
+  text-anchor: middle;
+}
+.mq-text.big           { font-size: 15px; }
+.mq-top-accent-text    { fill: var(--top-accent); }
+.mq-top-detail-text    { fill: var(--top-detail); }
+
+.mq-pants-main   { fill: var(--pants-main); stroke: rgba(0, 0, 0, 0.25); stroke-width: 0.8; }
+.mq-pants-accent { fill: var(--pants-accent); }
+.mq-pants-line   { fill: none; stroke: var(--pants-accent); stroke-width: 1; stroke-dasharray: 2 1.4; }
+.mq-pants-stripe { fill: none; stroke: var(--pants-accent); stroke-width: 3; }
+
+.mq-shoe-main    { fill: var(--shoes-main); stroke: rgba(0, 0, 0, 0.3); stroke-width: 0.8; }
+.mq-shoe-accent  { fill: var(--shoes-accent); }
+.mq-shoe-line    { fill: none; stroke: var(--shoes-accent); stroke-width: 1.2; stroke-linecap: round; }
+.mq-shoe-strap   { fill: none; stroke: var(--shoes-accent); stroke-width: 2.6; }
+
+.mq-head-main    { fill: var(--head-main); stroke: rgba(0, 0, 0, 0.3); stroke-width: 0.8; }
+.mq-head-accent  { fill: var(--head-accent); }
+[data-head="helmet"] .mq-head-accent { fill: none; stroke: var(--head-accent); stroke-width: 2.4; stroke-linecap: round; }
+.mq-helmet-strap { fill: none; stroke: #343a40; stroke-width: 1.4; }
+.mq-santa-red    { fill: #e03131; }
+.mq-santa-white  { fill: #f8f9fa; }
+
+.mq-glass-frame  { fill: var(--glasses-main); }
+.mq-glass-lens   { fill: var(--glasses-accent); opacity: 0.9; }
+.mq-glass-rim    { stroke: var(--glasses-main); stroke-width: 1.6; }
+.mq-glass-bridge { fill: none; stroke: var(--glasses-main); stroke-width: 1.6; }
+
+.mq-bag-main     { fill: var(--bag-main); stroke: rgba(0, 0, 0, 0.3); stroke-width: 0.8; }
+.mq-bag-accent   { fill: var(--bag-accent); }
+.mq-bag-strap    { fill: none; stroke: var(--bag-accent); stroke-width: 6; stroke-linecap: round; }
+.mq-bag-strap.thin { stroke-width: 4; }
+.mq-bag-buckle   { fill: #adb5bd; }
+.mq-bag-zip      { fill: none; stroke: var(--bag-accent); stroke-width: 1.2; }
